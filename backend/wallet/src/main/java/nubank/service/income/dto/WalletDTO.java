@@ -1,5 +1,6 @@
 package nubank.service.income.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
@@ -12,6 +13,7 @@ public class WalletDTO {
 
     private String name;
     private String cdi;
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     @JsonProperty("due_date")
     private Date dueDate;
     private Double value;

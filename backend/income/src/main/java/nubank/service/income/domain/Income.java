@@ -1,11 +1,13 @@
 package nubank.service.income.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.bson.codecs.pojo.annotations.BsonId;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
-
+@Document(collection = "incomes")
 public class Income {
     @BsonId
     private String id;

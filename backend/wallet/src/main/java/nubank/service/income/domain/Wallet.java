@@ -1,10 +1,12 @@
 package nubank.service.income.domain;
 
 import org.bson.codecs.pojo.annotations.BsonId;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
 
+@Document(collection = "wallets")
 public class Wallet {
     @BsonId
     private String id;

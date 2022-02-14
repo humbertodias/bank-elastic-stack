@@ -1,5 +1,6 @@
 package nubank.service.income.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import nubank.service.income.domain.Income;
 
@@ -12,6 +13,8 @@ public class IncomeDTO {
     private String name;
     @JsonProperty("cdi_percentage")
     private Double cdiPercentage;
+
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     @JsonProperty("due_date")
     private Date dueDate;
 

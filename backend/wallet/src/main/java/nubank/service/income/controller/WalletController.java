@@ -1,11 +1,9 @@
 package nubank.service.income.controller;
 
-import nubank.service.income.domain.Wallet;
 import nubank.service.income.dto.WalletDTO;
 import nubank.service.income.exception.InvalidRequest;
 import nubank.service.income.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,19 +31,23 @@ public class WalletController {
         return walletService.getAll().stream().map(WalletDTO::new).collect(Collectors.toList());
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "{id}")
     public ResponseEntity delete(@PathVariable String id) {
         walletService.delete(id);
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping
+    @RequestMapping(value="update", method={RequestMethod.OPTIONS})
+    public ResponseEntity options(@RequestBody WalletDTO walletDTO) {
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping(path="update")
     public ResponseEntity put(@RequestBody WalletDTO walletDTO) {
         var updated = walletService.update(walletDTO);
         return (updated != null) ?
                 ResponseEntity.status(200).build() :
                 ResponseEntity.badRequest().build();
     }
-
 
 }
