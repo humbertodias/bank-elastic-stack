@@ -24,6 +24,9 @@ Then access
 
 http://localhost:3000
 
+SwaggerUI
+
+http://localhost:9090/
 
 All Services 
 
@@ -31,8 +34,9 @@ All Services
 |--------------|:-------:|------:|
 | Web          |  Front  |  3000 |
 | Load balance |  Front  |  3005 |
+| SwaggerUI    |  Front  |  9090 |
 | Income       |  Back   |  8081 |
 | Wallet       |  Back   |  8082 |
-| Mongo        |  Back   | 27017 |
+| MongoDB      |  Back   | 27017 |
 
 
