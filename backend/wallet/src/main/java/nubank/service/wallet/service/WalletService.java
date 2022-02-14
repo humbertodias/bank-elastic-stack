@@ -39,13 +39,10 @@ public class WalletService {
     }
 
     public Wallet update(WalletDTO walletDTO){
-        var currenWallet = walletRepository.findById(walletDTO.getId());
-        var newValue = currenWallet.get().getValue() + walletDTO.getValue();
-
-        walletDTO.setValue(newValue);
-
-        var entity = walletDTO.toEntity();
-        return walletRepository.save(entity);
+        var currentWallet = walletRepository.findById(walletDTO.getId()).get();
+        var newValue = currentWallet.getValue() + walletDTO.getValue();
+        currentWallet.setValue(newValue);
+        return walletRepository.save(currentWallet);
     }
 
     @Autowired
