@@ -1,8 +1,8 @@
-package nubank.service.wallet.dto;
+package nubank.service.income.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import nubank.service.wallet.domain.Income;
+import nubank.service.income.domain.Income;
 
 import java.util.Date;
 

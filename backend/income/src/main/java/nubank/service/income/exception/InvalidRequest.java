@@ -1,4 +1,4 @@
-package nubank.service.wallet.exception;
+package nubank.service.income.exception;
 
 public class InvalidRequest extends Exception {
     public InvalidRequest(String message) {

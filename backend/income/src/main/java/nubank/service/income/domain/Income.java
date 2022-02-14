@@ -1,4 +1,4 @@
-package nubank.service.wallet.domain;
+package nubank.service.income.domain;
 
 
 import org.bson.codecs.pojo.annotations.BsonId;

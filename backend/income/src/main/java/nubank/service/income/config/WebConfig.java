@@ -1,4 +1,4 @@
-package nubank.service.wallet.config;
+package nubank.service.income.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

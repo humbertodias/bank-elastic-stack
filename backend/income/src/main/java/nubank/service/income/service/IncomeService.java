@@ -1,9 +1,9 @@
-package nubank.service.wallet.service;
+package nubank.service.income.service;
 
-import nubank.service.wallet.domain.Income;
-import nubank.service.wallet.dto.IncomeDTO;
-import nubank.service.wallet.exception.InvalidRequest;
-import nubank.service.wallet.repository.IncomeRepository;
+import nubank.service.income.domain.Income;
+import nubank.service.income.dto.IncomeDTO;
+import nubank.service.income.exception.InvalidRequest;
+import nubank.service.income.repository.IncomeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

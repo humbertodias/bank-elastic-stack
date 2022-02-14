@@ -1,8 +1,8 @@
-package nubank.service.wallet.controller;
+package nubank.service.income.controller;
 
-import nubank.service.wallet.dto.IncomeDTO;
-import nubank.service.wallet.exception.InvalidRequest;
-import nubank.service.wallet.service.IncomeService;
+import nubank.service.income.dto.IncomeDTO;
+import nubank.service.income.exception.InvalidRequest;
+import nubank.service.income.service.IncomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

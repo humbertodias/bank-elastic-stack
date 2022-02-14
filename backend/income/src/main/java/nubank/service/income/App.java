@@ -1,7 +1,7 @@
-package nubank.service.wallet;
+package nubank.service.income;
 
-import nubank.service.wallet.domain.Income;
-import nubank.service.wallet.repository.IncomeRepository;
+import nubank.service.income.domain.Income;
+import nubank.service.income.repository.IncomeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -15,7 +15,6 @@ public class App implements CommandLineRunner {
 	public static void main(String[] args) {
 		SpringApplication.run(App.class, args);
 	}
-
 
 	@Autowired
 	private IncomeRepository repository;

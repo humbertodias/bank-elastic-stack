@@ -1,6 +1,6 @@
-package nubank.service.wallet.repository;
+package nubank.service.income.repository;
 
-import nubank.service.wallet.domain.Income;
+import nubank.service.income.domain.Income;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
