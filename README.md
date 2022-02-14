@@ -3,15 +3,21 @@
 Nubank Stack
 
 ### Backend
-* Income - Microsserviço responsável pela parte de rendimentos
-* Wallet - Microsserviço responsável pela parte de carteiras
+- [x] Income  - Microsserviço responsável pela parte de rendimentos
+- [x] Wallet  - Microsserviço responsável pela parte de carteiras
+- [ ] Auth    - Authentication operations
+- [ ] Account - Contains methods to access the user account details and the checking account transactions and bills
+- [ ] Card    - Contains methods to retrieve the feed of transactions from the credit card
+- [ ] Payment - Contains methods to create payment requests
+
+
 
 ### Front
-* Web
+* Web - Cliente responsivo 
 
 ### Infra
-* Load Balance
-* Mongo
+* Load Balance - Redirecionador de requisições 
+* MongoDB      - Persistência
 
 
 ### How to run
@@ -26,7 +32,7 @@ http://localhost:3000
 
 SwaggerUI
 
-http://localhost:9090/
+http://localhost:9090
 
 All Services 
 
