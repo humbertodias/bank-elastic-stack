@@ -1,0 +1,38 @@
+.g-bottom-button {
+  background-color: white;
+  border-top: 1px solid #c4c4c4;
+  bottom: 0;
+  display: flex;
+  justify-content: space-around;
+  left: 0;
+  padding: 16px 0;
+  position: fixed;
+  width: 100%;
+
+  button,
+  a {
+    align-items: center;
+    background-color: transparent;
+    display: flex;
+    flex-flow: column;
+    font-size: 14px;
+    padding: 4px 18px;
+    text-decoration: none;
+
+    ion-icon {
+      color: #820ad1;
+      height: 20px;
+      width: 24px;
+    }
+
+    span {
+      color: #484444;
+      margin-top: 8px;
+    }
+  }
+}
+
+.title {
+  font-size: 18px;
+  line-height: 24px;
+}

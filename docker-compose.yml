@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+
+  lb:
+    build: infra/lb
+    ports:
+      - "3005:3005"
+    networks:
+      - backend
+
+  web:
+    build: frontend/web
+    ports:
+      - "3000:3000"    
+    networks:
+      - frontend
+      - backend
+
+  income:
+    build: backend/income
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/nubank-incomes
+    ports:
+      - "8081:8080"    
+    networks:
+      - backend
+
+  wallet:
+    build: backend/wallet
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/nubank-wallets
+    ports:
+      - "8082:8080"
+    networks:
+      - backend
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      # Persist data
+      - mongo_data:/data/db
+    networks:
+      - backend
+
+volumes:
+  mongo_data:
+
+networks: 
+    frontend:
+      driver: bridge
+    backend:
+      driver: bridge
