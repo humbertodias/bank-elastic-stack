@@ -35,6 +35,15 @@ services:
     networks:
       - backend
 
+  account:
+    build: backend/account
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/nubank-account
+    ports:
+      - "8083:8080"
+    networks:
+      - backend
+
   mongo:
     image: mongo
     restart: always
@@ -54,6 +63,7 @@ services:
       URLS: "[
             { url: 'http://localhost:8081/v2/api-docs', name: 'Income'},
             { url: 'http://localhost:8082/v2/api-docs', name: 'Wallet'},
+            { url: 'http://localhost:8083/v2/api-docs', name: 'Account'},
            ]"
     networks:
       - backend
