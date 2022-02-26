@@ -2,6 +2,20 @@
 
 Nubank Stack
 
+### Infra
+
+```mermaid
+graph TD
+    A[fa:fa-mobile Client] -->|:3000/*| B[fa:fa-server FrontEnd]
+    B -->|:3005/*| C[fa:fa-balance-scale Load Balancer]
+    C -->|:8080/account| D[fa:fa-server Account]
+    C -->|:8081/income| E[fa:fa-server Income]
+    C -->|:8083/wallet| F[fa:fa-server Wallet]
+    D -->|:27017| G[fa:fa-database NoSQL]
+    E -->|:27017| G
+    F -->|:27017| G
+```
+
 ### Backend
 - [x] [Income](backend/income)  - Microsserviço responsável pela parte de rendimentos
 - [x] [Wallet](backend/wallet)   - Microsserviço responsável pela parte de carteiras
@@ -9,7 +23,6 @@ Nubank Stack
 - [ ] [Auth](backend/auth)     - Authentication operations
 - [ ] [Card](backend/card)     - Contains methods to retrieve the feed of transactions from the credit card
 - [ ] [Payment](backend/payment)  - Contains methods to create payment requests
-
 
 
 ### Front
@@ -47,3 +60,7 @@ All Services
 | MongoDB      |  Back   | 27017 |
 
 
+
+### Ref
+
+* [mermaid-editor](https://mermaidjs.github.io/mermaid-live-editor)
