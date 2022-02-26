@@ -24,7 +24,7 @@ services:
     ports:
       - "8080"    
     deploy:
-      replicas: 2
+      replicas: 1
     networks:
       - backend
 
@@ -35,7 +35,7 @@ services:
     ports:
       - "8080"
     deploy:
-      replicas: 3
+      replicas: 1
     networks:
       - backend
 
@@ -44,7 +44,9 @@ services:
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/nubank-account
     ports:
-      - "8083:8080"
+      - "8080"
+    deploy:
+      replicas: 1
     networks:
       - backend
 
@@ -63,12 +65,6 @@ services:
     image: swaggerapi/swagger-ui
     ports:
       - "9090:8080"
-    environment:
-      URLS: "[
-            { url: 'income.json', name: 'Income'},
-            { url: 'wallet.json', name: 'Wallet'},
-            { url: 'account.json', name: 'Account'},
-           ]"
     depends_on:
       account:
         condition: service_healthy
@@ -76,12 +72,18 @@ services:
         condition: service_healthy
       income:
         condition: service_healthy
+    environment:
+      URLS: "[
+            { url: 'income.json', name: 'Income'},
+            { url: 'wallet.json', name: 'Wallet'},
+            { url: 'account.json', name: 'Account'},
+           ]"
     command: |
-      sh -c "wget http://income:8080/v3/api-docs -O /usr/share/nginx/html/income.json &&
-             wget http://wallet:8080/v3/api-docs -O /usr/share/nginx/html/wallet.json &&
-             wget http://account:8080/v3/api-docs -O /usr/share/nginx/html/account.json &&
-             sed -i 's/income:8080/localhost:3005/g' /usr/share/nginx/html/income.json &&
-             sed -i 's/wallet:8080/localhost:3005/g' /usr/share/nginx/html/wallet.json &&
+      sh -c "wget http://income:8080/v3/api-docs -O /usr/share/nginx/html/income.json    &&
+             wget http://wallet:8080/v3/api-docs -O /usr/share/nginx/html/wallet.json    &&
+             wget http://account:8080/v3/api-docs -O /usr/share/nginx/html/account.json  &&
+             sed -i 's/income:8080/localhost:3005/g' /usr/share/nginx/html/income.json   &&
+             sed -i 's/wallet:8080/localhost:3005/g' /usr/share/nginx/html/wallet.json   &&
              sed -i 's/account:8080/localhost:3005/g' /usr/share/nginx/html/account.json &&
              /usr/share/nginx/run.sh"
     networks:
