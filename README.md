@@ -2,14 +2,27 @@
 
 Nubank Stack
 
+### Front
+* Web - Cliente responsivo 
+
+1. Wallet
+
+    ![](doc/wallet.png)
+
+2. Income
+
+    ![](doc/income-cdi.png)
+
 ### Infra
+* Load Balance - Redirecionador de requisições 
+* MongoDB      - Persistência
 
 ```mermaid
 graph TD
     A[fa:fa-mobile Client] -->|:3000/*| B[fa:fa-server FrontEnd]
     B -->|:3005/*| C[fa:fa-balance-scale Load Balancer]
-    C -->|:8080/account| D[fa:fa-server Account]
-    C -->|:8081/income| E[fa:fa-server Income]
+    C -->|:8081/account| D[fa:fa-server Account]
+    C -->|:8082/income| E[fa:fa-server Income]
     C -->|:8083/wallet| F[fa:fa-server Wallet]
     D -->|:27017| G[fa:fa-database NoSQL]
     E -->|:27017| G
@@ -25,12 +38,6 @@ graph TD
 - [ ] [Payment](backend/payment)  - Contains methods to create payment requests
 
 
-### Front
-* Web - Cliente responsivo 
-
-### Infra
-* Load Balance - Redirecionador de requisições 
-* MongoDB      - Persistência
 
 
 ### How to run
