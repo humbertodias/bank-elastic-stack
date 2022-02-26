@@ -5,13 +5,11 @@ Nubank Stack
 ### Front
 * Web - Cliente responsivo 
 
-1. Wallet
+Wallet/Income
 
-    ![](doc/wallet.png)
+![](doc/wallet.png)
+![](doc/income-cdi.png)
 
-2. Income
-
-    ![](doc/income-cdi.png)
 
 ### Infra
 * Load Balance - Redirecionador de requisições 
