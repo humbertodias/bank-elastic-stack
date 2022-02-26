@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
 
@@ -22,7 +22,9 @@ services:
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/nubank-income
     ports:
-      - "8081:8080"    
+      - "8080"    
+    deploy:
+      replicas: 2
     networks:
       - backend
 
@@ -31,7 +33,9 @@ services:
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/nubank-wallet
     ports:
-      - "8082:8080"
+      - "8080"
+    deploy:
+      replicas: 3
     networks:
       - backend
 
@@ -61,10 +65,25 @@ services:
       - "9090:8080"
     environment:
       URLS: "[
-            { url: 'http://localhost:8081/v2/api-docs', name: 'Income'},
-            { url: 'http://localhost:8082/v2/api-docs', name: 'Wallet'},
-            { url: 'http://localhost:8083/v2/api-docs', name: 'Account'},
+            { url: 'income.json', name: 'Income'},
+            { url: 'wallet.json', name: 'Wallet'},
+            { url: 'account.json', name: 'Account'},
            ]"
+    depends_on:
+      account:
+        condition: service_healthy
+      wallet:
+        condition: service_healthy
+      income:
+        condition: service_healthy
+    command: |
+      sh -c "wget http://income:8080/v3/api-docs -O /usr/share/nginx/html/income.json &&
+             wget http://wallet:8080/v3/api-docs -O /usr/share/nginx/html/wallet.json &&
+             wget http://account:8080/v3/api-docs -O /usr/share/nginx/html/account.json &&
+             sed -i 's/income:8080/localhost:3005/g' /usr/share/nginx/html/income.json &&
+             sed -i 's/wallet:8080/localhost:3005/g' /usr/share/nginx/html/wallet.json &&
+             sed -i 's/account:8080/localhost:3005/g' /usr/share/nginx/html/account.json &&
+             /usr/share/nginx/run.sh"
     networks:
       - backend
 
