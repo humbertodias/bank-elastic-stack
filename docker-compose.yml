@@ -19,6 +19,8 @@ services:
 
   income:
     build: backend/income
+    volumes:
+      - gradle-cache:/home/gradle/.gradle
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/nubank-income
     ports:
@@ -30,6 +32,8 @@ services:
 
   wallet:
     build: backend/wallet
+    volumes:
+      - gradle-cache:/home/gradle/.gradle
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/nubank-wallet
     ports:
@@ -41,6 +45,8 @@ services:
 
   account:
     build: backend/account
+    volumes:
+      - gradle-cache:/home/gradle/.gradle
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/nubank-account
     ports:
@@ -91,6 +97,7 @@ services:
 
 volumes:
   mongo_data:
+  gradle-cache:
 
 networks: 
     frontend:
