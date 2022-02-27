@@ -65,6 +65,11 @@ All Services
 | MongoDB      |  Back   | 27017 |
 
 
+Scale 
+
+```
+docker-compose up --scale wallet=2 --scale income=2 -d
+```
 
 ### Ref
 
