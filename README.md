@@ -2,7 +2,12 @@
 
 Nubank Stack
 
-### Front
+## Requirements
+
+* [docker](https://docs.docker.com/get-docker)
+* [docker-compose](https://docs.docker.com/compose/install)
+
+## Front
 * Web - Cliente responsivo 
 
 Wallet/Income
@@ -11,7 +16,7 @@ Wallet/Income
 ![](doc/income-cdi.png)
 
 
-### Infra
+## Infra
 * Load Balance - Redirecionador de requisições 
 * MongoDB      - Persistência
 
@@ -27,7 +32,7 @@ graph TD
     F -->|:27017| G
 ```
 
-### Backend
+## Backend
 - [x] [Income](backend/income)  - Microsserviço responsável pela parte de rendimentos
 - [x] [Wallet](backend/wallet)   - Microsserviço responsável pela parte de carteiras
 - [ ] [Account](backend/account)  - Contains methods to access the user account details and the checking account transactions and bills
@@ -36,12 +41,10 @@ graph TD
 - [ ] [Payment](backend/payment)  - Contains methods to create payment requests
 
 
-
-
-### How to run
+## How to run
 
 ```
-docker-compose up
+docker-compose up -d
 ```
 
 Then access 

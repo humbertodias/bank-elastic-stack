@@ -6,6 +6,13 @@ services:
     build: infra/lb
     ports:
       - "3005:3005"
+    depends_on:
+      account:
+        condition: service_healthy
+      income:
+        condition: service_healthy
+      wallet:
+        condition: service_healthy
     networks:
       - backend
 
@@ -23,10 +30,13 @@ services:
       - gradle-cache:/home/gradle/.gradle
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/nubank-income
-    ports:
+    expose:
       - "8080"    
     deploy:
       replicas: 1
+    depends_on:
+      mongo:
+        condition: service_healthy
     networks:
       - backend
 
@@ -36,10 +46,13 @@ services:
       - gradle-cache:/home/gradle/.gradle
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/nubank-wallet
-    ports:
+    expose:
       - "8080"
     deploy:
       replicas: 1
+    depends_on:
+      mongo:
+        condition: service_healthy
     networks:
       - backend
 
@@ -49,15 +62,18 @@ services:
       - gradle-cache:/home/gradle/.gradle
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/nubank-account
-    ports:
+    expose:
       - "8080"
     deploy:
       replicas: 1
+    depends_on:
+      mongo:
+        condition: service_healthy
     networks:
       - backend
 
   mongo:
-    image: mongo
+    build: infra/mongo
     restart: always
     ports:
       - "27017:27017"
@@ -72,11 +88,7 @@ services:
     ports:
       - "9090:8080"
     depends_on:
-      account:
-        condition: service_healthy
-      wallet:
-        condition: service_healthy
-      income:
+      lb:
         condition: service_healthy
     environment:
       URLS: "[

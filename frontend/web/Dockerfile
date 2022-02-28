@@ -10,4 +10,5 @@ COPY . .
 RUN yarn install
 
 EXPOSE 3000
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 CMD curl -f http://localhost:3000/ || exit 1
 CMD [ "yarn", "run", "start"]
