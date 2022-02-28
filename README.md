@@ -77,3 +77,4 @@ docker-compose up --scale wallet=2 --scale income=2 -d
 ### Ref
 
 * [mermaid-editor](https://mermaidjs.github.io/mermaid-live-editor)
+* [spring-boot-banner-generator](https://springhow.com/spring-boot-banner-generator/)
