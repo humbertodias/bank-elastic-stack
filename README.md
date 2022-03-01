@@ -33,12 +33,12 @@ graph TD
 ```
 
 ## Backend
-- [x] [Income](backend/income)  - Microsserviço responsável pela parte de rendimentos
-- [x] [Wallet](backend/wallet)   - Microsserviço responsável pela parte de carteiras
-- [ ] [Account](backend/account)  - Contains methods to access the user account details and the checking account transactions and bills
-- [ ] [Auth](backend/auth)     - Authentication operations
-- [ ] [Card](backend/card)     - Contains methods to retrieve the feed of transactions from the credit card
-- [ ] [Payment](backend/payment)  - Contains methods to create payment requests
+- [x] [Income](app/backend/income)  - Microsserviço responsável pela parte de rendimentos
+- [x] [Wallet](app/backend/wallet)   - Microsserviço responsável pela parte de carteiras
+- [ ] [Account](app/backend/account)  - Contains methods to access the user account details and the checking account transactions and bills
+- [ ] [Auth](app/backend/auth)     - Authentication operations
+- [ ] [Card](app/backend/card)     - Contains methods to retrieve the feed of transactions from the credit card
+- [ ] [Payment](app/backend/payment)  - Contains methods to create payment requests
 
 
 ## How to run
@@ -57,15 +57,15 @@ http://localhost:9090
 
 All Services 
 
-| Service      | Network |  Port |
-|--------------|:-------:|------:|
-| Web          |  Front  |  3000 |
-| Load balance |  Front  |  3005 |
-| SwaggerUI    |  Front  |  9090 |
-| Income       |  Back   |  8081 |
-| Wallet       |  Back   |  8082 |
-| Account      |  Back   |  8083 |
-| MongoDB      |  Back   | 27017 |
+| Service      |   Network   |  Port |
+|--------------|:-----------:|------:|
+| Web          |    Front    |  3000 |
+| Load balance |    Front    |  3005 |
+| SwaggerUI    |    Front    |  9090 |
+| Income       |    Back     |  8081 |
+| Wallet       |    Back     |  8082 |
+| Account      |    Back     |  8083 |
+| MongoDB      | Persistence | 27017 |
 
 
 Scale 
@@ -74,10 +74,10 @@ Scale
 docker-compose up --scale wallet=2 --scale income=2 -d
 ```
 
-# Kubernets
+# Kubernetes
 
 ```
-make k8s-publish
+make k8s-start
 ```
 Then access 
 

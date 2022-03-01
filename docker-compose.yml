@@ -3,7 +3,7 @@ version: '3.8'
 services:
 
   lb:
-    build: infra/lb
+    build: app/frontend/lb
     ports:
       - "3005:3005"
     depends_on:
@@ -17,7 +17,7 @@ services:
       - backend
 
   web:
-    build: frontend/web
+    build: app/frontend/web
     ports:
       - "3000:3000"    
     networks:
@@ -25,7 +25,7 @@ services:
       - backend
 
   income:
-    build: backend/income
+    build: app/backend/income
     volumes:
       - gradle-cache:/home/gradle/.gradle
     environment:
@@ -33,7 +33,7 @@ services:
     expose:
       - "8080"    
     deploy:
-      replicas: 1
+      replicas: 2
     depends_on:
       mongo:
         condition: service_healthy
@@ -41,7 +41,7 @@ services:
       - backend
 
   wallet:
-    build: backend/wallet
+    build: app/backend/wallet
     volumes:
       - gradle-cache:/home/gradle/.gradle
     environment:
@@ -49,7 +49,7 @@ services:
     expose:
       - "8080"
     deploy:
-      replicas: 1
+      replicas: 2
     depends_on:
       mongo:
         condition: service_healthy
@@ -57,7 +57,7 @@ services:
       - backend
 
   account:
-    build: backend/account
+    build: app/backend/account
     volumes:
       - gradle-cache:/home/gradle/.gradle
     environment:
@@ -73,7 +73,7 @@ services:
       - backend
 
   mongo:
-    build: infra/mongo
+    build: app/data/mongo
     restart: always
     ports:
       - "27017:27017"
