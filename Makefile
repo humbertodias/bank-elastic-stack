@@ -33,6 +33,7 @@ k8s-delete:
 	swagger-ui-service.yaml,swagger-ui-deployment.yaml	
 
 k8s-ports:
+	sleep 10
 	bash k8s-ports.sh
 
 k8s-publish:	k8s-apply	k8s-ports

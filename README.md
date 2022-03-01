@@ -83,6 +83,17 @@ Then access
 
 http://localhost:3001
 
+and 
+
+http://localhost:3002
+
+
+Delete
+
+```
+make k8s-delete
+```
+
 ### Ref
 
 * [mermaid-editor](https://mermaidjs.github.io/mermaid-live-editor)
