@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: account
+  name: account
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: account
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/backend: "true"
+        io.kompose.service: account
+    spec:
+      containers:
+        - env:
+            - name: SPRING_DATA_MONGODB_URI
+              value: mongodb://mongo:27017/nubank-account
+          image: docker.io/hldtux/account:0.0.1-SNAPSHOT
+          name: account
+          ports:
+            - containerPort: 8080
+          resources: {}
+          volumeMounts:
+            - mountPath: /home/gradle/.gradle
+              name: gradle-cache
+      restartPolicy: Always
+      volumes:
+        - name: gradle-cache
+          persistentVolumeClaim:
+            claimName: gradle-cache
+status: {}

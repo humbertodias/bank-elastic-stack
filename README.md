@@ -74,6 +74,15 @@ Scale
 docker-compose up --scale wallet=2 --scale income=2 -d
 ```
 
+# Kubernets
+
+```
+make k8s-publish
+```
+Then access 
+
+http://localhost:3001
+
 ### Ref
 
 * [mermaid-editor](https://mermaidjs.github.io/mermaid-live-editor)

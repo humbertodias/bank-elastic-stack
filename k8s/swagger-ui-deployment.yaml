@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: swagger-ui
+  name: swagger-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: swagger-ui
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/backend: "true"
+        io.kompose.service: swagger-ui
+    spec:
+      containers:
+        - args:
+            - sh
+            - -c
+            - |-
+              wget http://income:8080/v3/api-docs -O /usr/share/nginx/html/income.json    &&
+                     wget http://wallet:8080/v3/api-docs -O /usr/share/nginx/html/wallet.json    &&
+                     wget http://account:8080/v3/api-docs -O /usr/share/nginx/html/account.json  &&
+                     sed -i 's/income:8080/localhost:3005/g' /usr/share/nginx/html/income.json   &&
+                     sed -i 's/wallet:8080/localhost:3005/g' /usr/share/nginx/html/wallet.json   &&
+                     sed -i 's/account:8080/localhost:3005/g' /usr/share/nginx/html/account.json &&
+                     /usr/share/nginx/run.sh
+          env:
+            - name: URLS
+              value: '[ { url: ''income.json'', name: ''Income''}, { url: ''wallet.json'', name: ''Wallet''}, { url: ''account.json'', name: ''Account''}, ]'
+          image: swaggerapi/swagger-ui
+          name: swagger-ui
+          ports:
+            - containerPort: 8080
+          resources: {}
+      restartPolicy: Always
+status: {}
