@@ -29,22 +29,11 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
-          args:
-            - sh
-            - -c
-            - |-
-              wget http://income:8080/v3/api-docs -O /usr/share/nginx/html/income.json    &&
-                     wget http://wallet:8080/v3/api-docs -O /usr/share/nginx/html/wallet.json    &&
-                     wget http://account:8080/v3/api-docs -O /usr/share/nginx/html/account.json  &&
-                     sed -i 's/income:8080/localhost:3005/g' /usr/share/nginx/html/income.json   &&
-                     sed -i 's/wallet:8080/localhost:3005/g' /usr/share/nginx/html/wallet.json   &&
-                     sed -i 's/account:8080/localhost:3005/g' /usr/share/nginx/html/account.json &&
-                     /usr/share/nginx/run.sh
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           env:
             - name: URLS
-              value: '[ { url: ''income.json'', name: ''Income''}, { url: ''wallet.json'', name: ''Wallet''}, { url: ''account.json'', name: ''Account''}, ]'
+              value: '[ { url: ''http://localhost:3005/income/openapi'', name: ''Income''}, { url: ''http://localhost:3005/wallet/openapi'', name: ''Wallet''}, { url: ''http://localhost:3005/account/openapi'', name: ''Account''}, ]'
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:

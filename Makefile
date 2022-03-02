@@ -14,7 +14,8 @@ docker-push:
 	
 k8s-apply:
 	cd infra/k8s &&\
-	kubectl apply -f mongo-data-persistentvolumeclaim.yaml,mongo-service.yaml,mongo-deployment.yaml,\
+	kubectl apply --namespace=nubank -f namespace.yaml,\
+	mongo-data-persistentvolumeclaim.yaml,mongo-service.yaml,mongo-deployment.yaml,\
 	gradle-cache-persistentvolumeclaim.yaml,\
 	account-service.yaml,account-deployment.yaml,\
 	income-service.yaml,income-deployment.yaml,\
@@ -32,15 +33,18 @@ k8s-delete:
 	wallet-service.yaml,wallet-deployment.yaml,\
 	web-service.yaml,web-deployment.yaml,\
 	lb-service.yaml,lb-deployment.yaml,\
-	swagger-ui-service.yaml,swagger-ui-deployment.yaml	
+	swagger-ui-service.yaml,swagger-ui-deployment.yaml,\
+	namespace.yaml	
 
 forward-port:
-	bash infra/port-forward.sh web 3001
-	bash infra/port-forward.sh swagger-ui 3002
+	bash infra/port-forward.sh web 3001 nubank
+	bash infra/port-forward.sh swagger-ui 3002 nubank
+	bash infra/port-forward.sh lb 3005 nubank
 
 close-port:
 	kill `lsof -t -i :3001`
 	kill `lsof -t -i :3002`
+	kill `lsof -t -i :3005`
 
 start:
 	$(MAKE) k8s-apply
@@ -48,27 +52,40 @@ start:
 	$(MAKE) forward-port
 
 stop:
-	$(MAKE) k8s-delete
+	# $(MAKE) k8s-delete
+	$(MAKE) k8s-delete-namespace
 
 helm-install:
-	helm install --set name=mongo mongo infra/helm/mongo
-	helm install --set name=account account infra/helm/account
-	helm install --set name=income income infra/helm/income
-	helm install --set name=wallet wallet infra/helm/wallet
-	helm install --set name=lb lb infra/helm/lb
-	helm install --set name=web web infra/helm/web
-	helm install --set name=swagger-ui swagger-ui infra/helm/swagger-ui
+	$(MAKE) k8s-create-namespace
+	helm install --namespace nubank --set name=mongo mongo infra/helm/mongo
+	helm install --namespace nubank --set name=account account infra/helm/account
+	helm install --namespace nubank --set name=income income infra/helm/income
+	helm install --namespace nubank --set name=wallet wallet infra/helm/wallet
+	helm install --namespace nubank --set name=lb lb infra/helm/lb
+	helm install --namespace nubank --set name=web web infra/helm/web
+	helm install --namespace nubank --set name=swagger-ui swagger-ui infra/helm/swagger-ui
 	sleep 10
 	$(MAKE) forward-port
 
 helm-upgrade:
-	helm upgrade --set name=mongo mongo infra/helm/mongo
-	helm upgrade --set name=account account infra/helm/account
-	helm upgrade --set name=income income infra/helm/income
-	helm upgrade --set name=wallet wallet infra/helm/wallet
-	helm upgrade --set name=lb lb infra/helm/lb
-	helm upgrade --set name=web web infra/helm/web
-	helm upgrade --set name=swagger-ui swagger-ui infra/helm/swagger-ui
+	helm upgrade --namespace nubank --set name=mongo mongo infra/helm/mongo
+	helm upgrade --namespace nubank --set name=account account infra/helm/account
+	helm upgrade --namespace nubank --set name=income income infra/helm/income
+	helm upgrade --namespace nubank --set name=wallet wallet infra/helm/wallet
+	helm upgrade --namespace nubank --set name=lb lb infra/helm/lb
+	helm upgrade --namespace nubank --set name=web web infra/helm/web
+	helm upgrade --namespace nubank --set name=swagger-ui swagger-ui infra/helm/swagger-ui
 
 helm-uninstall:
-	helm uninstall `helm ls -q`
+	# helm uninstall `helm ls --namespace nubank -q`
+	$(MAKE) k8s-delete-namespace
+
+k8s-create-namespace:
+	cd infra/k8s && kubectl create -f namespace.yaml
+
+k8s-delete-namespace:
+	kubectl delete namespaces nubank
+
+clean:
+	cd app/backend && rm -rf account/build income/build wallet/build
+	cd app/frontend && rm -rf web/build
