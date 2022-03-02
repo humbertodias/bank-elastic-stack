@@ -1,6 +1,10 @@
 # nubank-stack
 
-Nubank Stack
+Simple Nubank Stack that tries to implement three different ways of horizontal scalability.
+
+1. Docker compose
+2. Kubernetes - Native
+3. Kubernetes - Helm
 
 ## Requirements
 
