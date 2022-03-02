@@ -42,9 +42,9 @@ forward-port:
 	bash infra/port-forward.sh lb 3005 nubank
 
 close-port:
-	kill `lsof -t -i :3001`
-	kill `lsof -t -i :3002`
-	kill `lsof -t -i :3005`
+	lsof -t -i :3001 | xargs -r kill
+	lsof -t -i :3002 | xargs -r kill
+	lsof -t -i :3005 | xargs -r kill
 
 start:
 	$(MAKE) k8s-apply
