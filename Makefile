@@ -54,6 +54,7 @@ start:
 stop:
 	# $(MAKE) k8s-delete
 	$(MAKE) k8s-delete-namespace
+	$(MAKE) close-port
 
 helm-install:
 	$(MAKE) k8s-create-namespace
@@ -79,6 +80,7 @@ helm-upgrade:
 helm-uninstall:
 	# helm uninstall `helm ls --namespace nubank -q`
 	$(MAKE) k8s-delete-namespace
+	$(MAKE) close-port
 
 k8s-create-namespace:
 	cd infra/k8s && kubectl create -f namespace.yaml
