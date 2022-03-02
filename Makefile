@@ -15,6 +15,7 @@ docker-push:
 k8s-apply:
 	cd infra/k8s &&\
 	kubectl apply -f mongo-data-persistentvolumeclaim.yaml,mongo-service.yaml,mongo-deployment.yaml,\
+	gradle-cache-persistentvolumeclaim.yaml,\
 	account-service.yaml,account-deployment.yaml,\
 	income-service.yaml,income-deployment.yaml,\
 	wallet-service.yaml,wallet-deployment.yaml,\
@@ -25,6 +26,7 @@ k8s-apply:
 k8s-delete:
 	cd infra/k8s &&\
 	kubectl delete -f mongo-data-persistentvolumeclaim.yaml,mongo-service.yaml,mongo-deployment.yaml,\
+	gradle-cache-persistentvolumeclaim.yaml,\
 	account-service.yaml,account-deployment.yaml,\
 	income-service.yaml,income-deployment.yaml,\
 	wallet-service.yaml,wallet-deployment.yaml,\

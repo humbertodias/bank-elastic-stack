@@ -59,15 +59,15 @@ http://localhost:9090
 
 All Services 
 
-| Service      |   Network   |  Port |
-|--------------|:-----------:|------:|
-| Web          |    Front    |  3000 |
-| Load balance |    Front    |  3005 |
-| SwaggerUI    |    Front    |  9090 |
-| Income       |    Back     |  8081 |
-| Wallet       |    Back     |  8082 |
-| Account      |    Back     |  8083 |
-| MongoDB      | Persistence | 27017 |
+| Service      | Network |  Port |
+|--------------|:-------:|------:|
+| Web          |  Front  |  3000 |
+| Load balance |  Front  |  3005 |
+| SwaggerUI    |  Front  |  9090 |
+| Income       |  Back   |  8081 |
+| Wallet       |  Back   |  8082 |
+| Account      |  Back   |  8083 |
+| MongoDB      |  Back   | 27017 |
 
 
 Scale 
