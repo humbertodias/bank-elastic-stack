@@ -18,6 +18,7 @@ docker-push:
 	docker tag lb:0.0.1 hldtux/lb:0.0.1 && docker push hldtux/lb:0.0.1
 	
 k8s-apply:
+	$(MAKE) k8s-create-namespace
 	cd infra/k8s &&\
 	kubectl apply --namespace=$(NAMESPACE) -f mongo-data-persistentvolumeclaim.yaml,mongo-service.yaml,mongo-deployment.yaml,\
 	gradle-cache-persistentvolumeclaim.yaml,\
