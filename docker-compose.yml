@@ -19,7 +19,7 @@ services:
   web:
     build: app/frontend/web
     ports:
-      - "3000:3000"    
+      - "3001:3000"
     networks:
       - frontend
       - backend
@@ -30,10 +30,10 @@ services:
       - gradle-cache:/home/gradle/.gradle
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/nubank-income
-    expose:
-      - "8080"    
+    ports:
+      - "8081:8080"
     deploy:
-      replicas: 2
+      replicas: 1
     depends_on:
       mongo:
         condition: service_healthy
@@ -46,10 +46,10 @@ services:
       - gradle-cache:/home/gradle/.gradle
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/nubank-wallet
-    expose:
-      - "8080"
+    ports:
+      - "8082:8080"
     deploy:
-      replicas: 2
+      replicas: 1
     depends_on:
       mongo:
         condition: service_healthy
@@ -62,8 +62,8 @@ services:
       - gradle-cache:/home/gradle/.gradle
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/nubank-account
-    expose:
-      - "8080"
+    ports:
+      - "8083:8080"
     deploy:
       replicas: 1
     depends_on:
@@ -86,7 +86,7 @@ services:
   swagger-ui:
     image: swaggerapi/swagger-ui
     ports:
-      - "9090:8080"
+      - "3002:8080"
     depends_on:
       lb:
         condition: service_healthy

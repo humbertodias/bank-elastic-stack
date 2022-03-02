@@ -51,19 +51,19 @@ docker-compose up -d
 
 Then access 
 
-http://localhost:3000
+http://localhost:3001
 
 SwaggerUI
 
-http://localhost:9090
+http://localhost:3002
 
 All Services 
 
 | Service      | Network |  Port |
 |--------------|:-------:|------:|
-| Web          |  Front  |  3000 |
+| Web          |  Front  |  3001 |
+| SwaggerUI    |  Front  |  3002 |
 | Load balance |  Front  |  3005 |
-| SwaggerUI    |  Front  |  9090 |
 | Income       |  Back   |  8081 |
 | Wallet       |  Back   |  8082 |
 | Account      |  Back   |  8083 |
