@@ -6,6 +6,8 @@ Nubank Stack
 
 * [docker](https://docs.docker.com/get-docker)
 * [docker-compose](https://docs.docker.com/compose/install)
+* [helm](https://rancherdesktop.io/)
+* [rancher desktop](https://rancherdesktop.io/)
 
 ## Front
 * Web - Cliente responsivo 
@@ -74,7 +76,7 @@ Scale
 docker-compose up --scale wallet=2 --scale income=2 -d
 ```
 
-# Kubernetes
+# Kubernetes - Native
 
 ```
 make start
@@ -100,7 +102,7 @@ make stop
 ```
 
 
-# Helm
+# Kubernetes - Helm
 
 ```
 make helm-install
@@ -120,6 +122,12 @@ and
 
 http://localhost:3002
 
+
+Stop
+
+```
+make helm-uninstall
+```
 
 ### Ref
 

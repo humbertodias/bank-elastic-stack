@@ -32,14 +32,20 @@ k8s-delete:
 	lb-service.yaml,lb-deployment.yaml,\
 	swagger-ui-service.yaml,swagger-ui-deployment.yaml	
 
+forward-port:
+	bash infra/port-forward.sh web 3001
+	bash infra/port-forward.sh swagger-ui 3002
+
+close-port:
+	kill `lsof -t -i :3001`
+	kill `lsof -t -i :3002`
+
 start:
 	$(MAKE) k8s-apply
 	sleep 10
 	$(MAKE) forward-port
 
 stop:
-	kill `lsof -t -i :3001`
-	kill `lsof -t -i :3002`
 	$(MAKE) k8s-delete
 
 helm-install:
@@ -52,11 +58,6 @@ helm-install:
 	helm install --set name=swagger-ui swagger-ui infra/helm/swagger-ui
 	sleep 10
 	$(MAKE) forward-port
-
-forward-port:
-	bash infra/port-forward.sh web 3001
-	bash infra/port-forward.sh swagger-ui 3002
-
 
 helm-upgrade:
 	helm upgrade --set name=mongo mongo infra/helm/mongo
