@@ -1,12 +1,12 @@
 NAMESPACE=bank
 
 docker-build:
-	# cd app/backend/account && docker build . -t account:0.0.1-SNAPSHOT
-	# cd app/backend/income && docker build . -t income:0.0.1-SNAPSHOT
-	# cd app/backend/wallet && docker build . -t wallet:0.0.1-SNAPSHOT
-	cd app/backend/account && ./gradlew bootBuildImage
-	cd app/backend/income && ./gradlew bootBuildImage
-	cd app/backend/wallet && ./gradlew bootBuildImage
+	cd app/backend/account && docker build . -t account:0.0.1-SNAPSHOT
+	cd app/backend/income && docker build . -t income:0.0.1-SNAPSHOT
+	cd app/backend/wallet && docker build . -t wallet:0.0.1-SNAPSHOT
+	#cd app/backend/account && ./gradlew bootBuildImage
+	#cd app/backend/income && ./gradlew bootBuildImage
+	#cd app/backend/wallet && ./gradlew bootBuildImage
 	cd app/frontend/web && docker build . -t web:0.0.1
 	cd app/frontend/lb && docker build . -t lb:0.0.1
 
@@ -19,8 +19,7 @@ docker-push:
 	
 k8s-apply:
 	cd infra/k8s &&\
-	kubectl apply --namespace=$(NAMESPACE) -f namespace.yaml,\
-	mongo-data-persistentvolumeclaim.yaml,mongo-service.yaml,mongo-deployment.yaml,\
+	kubectl apply --namespace=$(NAMESPACE) -f mongo-data-persistentvolumeclaim.yaml,mongo-service.yaml,mongo-deployment.yaml,\
 	gradle-cache-persistentvolumeclaim.yaml,\
 	account-service.yaml,account-deployment.yaml,\
 	income-service.yaml,income-deployment.yaml,\
@@ -38,8 +37,7 @@ k8s-delete:
 	wallet-service.yaml,wallet-deployment.yaml,\
 	web-service.yaml,web-deployment.yaml,\
 	lb-service.yaml,lb-deployment.yaml,\
-	swagger-ui-service.yaml,swagger-ui-deployment.yaml,\
-	namespace.yaml	
+	swagger-ui-service.yaml,swagger-ui-deployment.yaml
 
 forward-port:
 	bash infra/port-forward.sh web 3001 $(NAMESPACE)
@@ -96,3 +94,7 @@ k8s-delete-namespace:
 clean:
 	cd app/backend && rm -rf account/build income/build wallet/build
 	cd app/frontend && rm -rf web/build
+
+docker-rmi:
+	docker images -f "dangling=true" -q | xargs docker rmi -f 
+	echo account:0.0.1-SNAPSHOT income:0.0.1-SNAPSHOT wallet:0.0.1-SNAPSHOT hldtux/account:0.0.1-SNAPSHOT hldtux/income:0.0.1-SNAPSHOT hldtux/wallet:0.0.1-SNAPSHOT | xargs docker rmi -f
