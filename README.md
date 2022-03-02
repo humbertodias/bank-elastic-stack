@@ -78,6 +78,12 @@ docker-compose up --scale wallet=2 --scale income=2 -d
 
 # Kubernetes - Native
 
+Enabling docker over k8s.
+
+![](doc/rancher-kubernetes.png)
+
+now
+
 ```
 make start
 ```
