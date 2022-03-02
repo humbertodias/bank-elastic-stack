@@ -1,6 +1,6 @@
-# nubank-stack
+# bank-elastic-stack
 
-Simple Nubank Stack that tries to implement three different ways of horizontal scalability.
+Experiment of a simple elastic stack that tries to implement different ways to achieve the horizontal scalability.
 
 1. Docker compose
 2. Kubernetes - Native
