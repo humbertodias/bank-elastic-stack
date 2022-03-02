@@ -1,11 +1,11 @@
-# Default values for wallet.
+# Default values for swagger-ui.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: docker.io/hldtux/wallet
+  repository: swaggerapi/swagger-ui
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""

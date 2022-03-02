@@ -79,6 +79,11 @@ docker-compose up --scale wallet=2 --scale income=2 -d
 ```
 make start
 ```
+and
+```
+make forward-port
+```
+
 Then access 
 
 http://localhost:3001
@@ -100,6 +105,13 @@ make stop
 ```
 make helm-install
 ```
+
+wait until everything starts up
+
+```
+make forward-port
+```
+
 Then access
 
 http://localhost:3001

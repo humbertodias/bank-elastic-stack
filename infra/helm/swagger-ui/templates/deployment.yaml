@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "swagger-ui.fullname" . }}
+  labels:
+    {{- include "swagger-ui.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "swagger-ui.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "swagger-ui.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "swagger-ui.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          args:
+            - sh
+            - -c
+            - |-
+              wget http://income:8080/v3/api-docs -O /usr/share/nginx/html/income.json    &&
+                     wget http://wallet:8080/v3/api-docs -O /usr/share/nginx/html/wallet.json    &&
+                     wget http://account:8080/v3/api-docs -O /usr/share/nginx/html/account.json  &&
+                     sed -i 's/income:8080/localhost:3005/g' /usr/share/nginx/html/income.json   &&
+                     sed -i 's/wallet:8080/localhost:3005/g' /usr/share/nginx/html/wallet.json   &&
+                     sed -i 's/account:8080/localhost:3005/g' /usr/share/nginx/html/account.json &&
+                     /usr/share/nginx/run.sh
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          env:
+            - name: URLS
+              value: '[ { url: ''income.json'', name: ''Income''}, { url: ''wallet.json'', name: ''Wallet''}, { url: ''account.json'', name: ''Account''}, ]'
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

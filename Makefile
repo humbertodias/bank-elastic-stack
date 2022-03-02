@@ -35,8 +35,7 @@ k8s-delete:
 start:
 	$(MAKE) k8s-apply
 	sleep 10
-	bash infra/k8s/port-forward.sh web 3001
-	bash infra/k8s/port-forward.sh swagger-ui 3002
+	$(MAKE) forward-port
 
 stop:
 	kill `lsof -t -i :3001`
@@ -50,6 +49,14 @@ helm-install:
 	helm install --set name=wallet wallet infra/helm/wallet
 	helm install --set name=lb lb infra/helm/lb
 	helm install --set name=web web infra/helm/web
+	helm install --set name=swagger-ui swagger-ui infra/helm/swagger-ui
+	sleep 10
+	$(MAKE) forward-port
+
+forward-port:
+	bash infra/port-forward.sh web 3001
+	bash infra/port-forward.sh swagger-ui 3002
+
 
 helm-upgrade:
 	helm upgrade --set name=mongo mongo infra/helm/mongo
@@ -58,6 +65,7 @@ helm-upgrade:
 	helm upgrade --set name=wallet wallet infra/helm/wallet
 	helm upgrade --set name=lb lb infra/helm/lb
 	helm upgrade --set name=web web infra/helm/web
+	helm upgrade --set name=swagger-ui swagger-ui infra/helm/swagger-ui
 
 helm-uninstall:
 	helm uninstall `helm ls -q`
