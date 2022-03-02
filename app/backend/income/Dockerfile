@@ -2,7 +2,7 @@ FROM gradle:7.4.0-jdk11-alpine AS build
 ENV GRADLE_OPTS="-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
-RUN gradle build --no-daemon 
+RUN gradle build --no-daemon --parallel --build-cache
 
 FROM openjdk:11-jre-slim AS runtime
 EXPOSE 8080
