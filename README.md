@@ -64,9 +64,9 @@ All Services
 | Web          |  Front  |  3001 |
 | SwaggerUI    |  Front  |  3002 |
 | Load balance |  Front  |  3005 |
-| Income       |  Back   |  8081 |
-| Wallet       |  Back   |  8082 |
-| Account      |  Back   |  8083 |
+| Income       |  Back   |  3005 |
+| Wallet       |  Back   |  3005 |
+| Account      |  Back   |  3005 |
 | MongoDB      |  Back   | 27017 |
 
 
