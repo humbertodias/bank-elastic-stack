@@ -10,4 +10,3 @@ CONTAINER_PORT=$(kubectl get pod --namespace default "$POD_NAME" -o jsonpath="{.
 echo "CONTAINER_PORT:$CONTAINER_PORT"
 echo "Visit http://127.0.0.1:$PORT to use your application"
 kubectl --namespace default port-forward "$POD_NAME" "$PORT:$CONTAINER_PORT" &
-

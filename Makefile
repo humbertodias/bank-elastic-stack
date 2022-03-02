@@ -32,13 +32,32 @@ k8s-delete:
 	lb-service.yaml,lb-deployment.yaml,\
 	swagger-ui-service.yaml,swagger-ui-deployment.yaml	
 
-k8s-start:
+start:
 	$(MAKE) k8s-apply
 	sleep 10
 	bash infra/k8s/port-forward.sh web 3001
 	bash infra/k8s/port-forward.sh swagger-ui 3002
 
-k8s-stop:
+stop:
 	kill `lsof -t -i :3001`
 	kill `lsof -t -i :3002`
 	$(MAKE) k8s-delete
+
+helm-install:
+	helm install --set name=mongo mongo infra/helm/mongo
+	helm install --set name=account account infra/helm/account
+	helm install --set name=income income infra/helm/income
+	helm install --set name=wallet wallet infra/helm/wallet
+	helm install --set name=lb lb infra/helm/lb
+	helm install --set name=web web infra/helm/web
+
+helm-upgrade:
+	helm upgrade --set name=mongo mongo infra/helm/mongo
+	helm upgrade --set name=account account infra/helm/account
+	helm upgrade --set name=income income infra/helm/income
+	helm upgrade --set name=wallet wallet infra/helm/wallet
+	helm upgrade --set name=lb lb infra/helm/lb
+	helm upgrade --set name=web web infra/helm/web
+
+helm-uninstall:
+	helm uninstall `helm ls -q`

@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "wallet.fullname" . }}
+  name: {{ include "web.fullname" . }}
   labels:
-    {{- include "wallet.labels" . | nindent 4 }}
+    {{- include "web.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "wallet.selectorLabels" . | nindent 6 }}
+      {{- include "web.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "wallet.selectorLabels" . | nindent 8 }}
+        {{- include "web.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "wallet.serviceAccountName" . }}
+      serviceAccountName: {{ include "web.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -33,20 +33,17 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-            - name: SPRING_DATA_MONGODB_URI
-              value: mongodb://mongo:27017/nubank-wallet
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: 3000
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /actuator/health/liveness
+              path: /
               port: http
           readinessProbe:
             httpGet:
-              path: /actuator/health/readiness
+              path: /
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

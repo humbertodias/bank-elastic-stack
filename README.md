@@ -77,7 +77,7 @@ docker-compose up --scale wallet=2 --scale income=2 -d
 # Kubernetes
 
 ```
-make k8s-start
+make start
 ```
 Then access 
 
@@ -88,11 +88,26 @@ and
 http://localhost:3002
 
 
-Delete
+Stop
 
 ```
-make k8s-delete
+make stop
 ```
+
+
+# Helm
+
+```
+make helm-install
+```
+Then access
+
+http://localhost:3001
+
+and
+
+http://localhost:3002
+
 
 ### Ref
 
