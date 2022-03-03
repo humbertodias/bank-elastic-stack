@@ -82,7 +82,7 @@ helm-upgrade:
 	helm upgrade --namespace $(NAMESPACE) --set name=swagger-ui swagger-ui infra/helm/swagger-ui
 
 helm-uninstall:
-	# helm uninstall `helm ls --namespace nubank -q`
+	# helm ls --namespace $(NAMESPACE) -q | xargs helm uninstall
 	$(MAKE) k8s-delete-namespace
 	$(MAKE) close-port
 
@@ -91,6 +91,9 @@ k8s-create-namespace:
 
 k8s-delete-namespace:
 	kubectl delete namespaces $(NAMESPACE)
+
+k8s-memory:
+	kubectl top pod --namespace=$(NAMESPACE)
 
 clean:
 	cd app/backend && rm -rf account/build income/build wallet/build
