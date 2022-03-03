@@ -38,31 +38,6 @@ graph TD
     F -->|:27017| G
 ```
 
-## Backend
-- [x] [Income](app/backend/income)  - Microsserviço responsável pela parte de rendimentos
-- [x] [Wallet](app/backend/wallet)   - Microsserviço responsável pela parte de carteiras
-- [ ] [Account](app/backend/account)  - Contains methods to access the user account details and the checking account transactions and bills
-- [ ] [Auth](app/backend/auth)     - Authentication operations
-- [ ] [Card](app/backend/card)     - Contains methods to retrieve the feed of transactions from the credit card
-- [ ] [Payment](app/backend/payment)  - Contains methods to create payment requests
-
-
-## How to run
-
-# Docker compose
-
-```
-docker-compose up -d
-```
-
-Then access 
-
-http://localhost:3001
-
-SwaggerUI
-
-http://localhost:3002
-
 All Services 
 
 | Service      | Network |  Port |
@@ -75,71 +50,20 @@ All Services
 | Account      |  Back   |  3005 |
 | MongoDB      |  Back   | 27017 |
 
-
-Scale 
-
-```
-docker-compose up --scale wallet=2 --scale income=2 -d
-```
-
-# Kubernetes - Native
-
-Enabling docker over k8s.
-
-![](doc/rancher-kubernetes.png)
-
-now
-
-```
-make start
-```
-and
-```
-make forward-port
-```
-
-Then access 
-
-http://localhost:3001
-
-and 
-
-http://localhost:3002
+## Backend
+- [x] [Income](app/backend/income)  - Microsserviço responsável pela parte de rendimentos
+- [x] [Wallet](app/backend/wallet)   - Microsserviço responsável pela parte de carteiras
+- [ ] [Account](app/backend/account)  - Contains methods to access the user account details and the checking account transactions and bills
+- [ ] [Auth](app/backend/auth)     - Authentication operations
+- [ ] [Card](app/backend/card)     - Contains methods to retrieve the feed of transactions from the credit card
+- [ ] [Payment](app/backend/payment)  - Contains methods to create payment requests
 
 
-Stop
+## How to run
 
-```
-make stop
-```
-
-
-# Kubernetes - Helm
-
-```
-make helm-install
-```
-
-wait until everything starts up
-
-```
-make forward-port
-```
-
-Then access
-
-http://localhost:3001
-
-and
-
-http://localhost:3002
-
-
-Stop
-
-```
-make helm-uninstall
-```
+1. [Compose](COMPOSE.md)
+2. [K8S](K8S.md)
+3. [Helm](HELM.md)
 
 ### Ref
 
