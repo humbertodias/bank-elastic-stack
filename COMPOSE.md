@@ -18,3 +18,10 @@ Scale
 ```
 docker-compose up --scale wallet=2 --scale income=2 -d
 ```
+
+
+Stop
+
+```
+docker-compose down
+```
