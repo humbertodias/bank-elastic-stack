@@ -16,7 +16,11 @@ docker-push:
 	docker tag wallet:0.0.1-SNAPSHOT hldtux/wallet:0.0.1-SNAPSHOT && docker push hldtux/wallet:0.0.1-SNAPSHOT
 	docker tag web:0.0.1 hldtux/web:0.0.1 && docker push hldtux/web:0.0.1
 	docker tag lb:0.0.1 hldtux/lb:0.0.1 && docker push hldtux/lb:0.0.1
-	
+
+docker-rmi:
+	docker images -f "dangling=true" -q | xargs docker rmi -f 
+	echo account:0.0.1-SNAPSHOT income:0.0.1-SNAPSHOT wallet:0.0.1-SNAPSHOT hldtux/account:0.0.1-SNAPSHOT hldtux/income:0.0.1-SNAPSHOT hldtux/wallet:0.0.1-SNAPSHOT | xargs docker rmi -f
+
 k8s-apply:
 	$(MAKE) k8s-create-namespace
 	cd infra/k8s &&\
@@ -40,6 +44,25 @@ k8s-delete:
 	lb-service.yaml,lb-deployment.yaml,\
 	swagger-ui-service.yaml,swagger-ui-deployment.yaml
 
+k8s-start:
+	$(MAKE) k8s-apply
+	sleep 10
+	$(MAKE) forward-port
+
+k8s-stop:
+	# $(MAKE) k8s-delete
+	$(MAKE) k8s-delete-namespace
+	$(MAKE) close-port
+
+k8s-create-namespace:
+	kubectl create namespace $(NAMESPACE)
+
+k8s-delete-namespace:
+	kubectl delete namespaces $(NAMESPACE)
+
+k8s-memory:
+	kubectl top pod --namespace=$(NAMESPACE)
+
 forward-port:
 	bash infra/port-forward.sh web 3001 $(NAMESPACE)
 	bash infra/port-forward.sh swagger-ui 3002 $(NAMESPACE)
@@ -49,16 +72,6 @@ close-port:
 	lsof -t -i :3001 | xargs -r kill
 	lsof -t -i :3002 | xargs -r kill
 	lsof -t -i :3005 | xargs -r kill
-
-start:
-	$(MAKE) k8s-apply
-	sleep 10
-	$(MAKE) forward-port
-
-stop:
-	# $(MAKE) k8s-delete
-	$(MAKE) k8s-delete-namespace
-	$(MAKE) close-port
 
 helm-install:
 	$(MAKE) k8s-create-namespace
@@ -86,19 +99,6 @@ helm-uninstall:
 	$(MAKE) k8s-delete-namespace
 	$(MAKE) close-port
 
-k8s-create-namespace:
-	kubectl create namespace $(NAMESPACE)
-
-k8s-delete-namespace:
-	kubectl delete namespaces $(NAMESPACE)
-
-k8s-memory:
-	kubectl top pod --namespace=$(NAMESPACE)
-
 clean:
 	cd app/backend && rm -rf account/build income/build wallet/build
 	cd app/frontend && rm -rf web/build
-
-docker-rmi:
-	docker images -f "dangling=true" -q | xargs docker rmi -f 
-	echo account:0.0.1-SNAPSHOT income:0.0.1-SNAPSHOT wallet:0.0.1-SNAPSHOT hldtux/account:0.0.1-SNAPSHOT hldtux/income:0.0.1-SNAPSHOT hldtux/wallet:0.0.1-SNAPSHOT | xargs docker rmi -f

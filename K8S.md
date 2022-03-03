@@ -7,11 +7,7 @@ Enabling docker over k8s.
 now
 
 ```
-make start
-```
-and
-```
-make forward-port
+make k8s-start
 ```
 
 Then access 
@@ -31,5 +27,5 @@ kubectl scale --replicas=2 deployment/account -n bank
 Stop
 
 ```
-make stop
+make k8s-stop
 ```
