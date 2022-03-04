@@ -2,6 +2,7 @@ package nubank.service.account.domain;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 
 import org.bson.codecs.pojo.annotations.BsonId;
 import nubank.service.account.domain.CustomerDocument;
@@ -39,10 +40,10 @@ public class Customer {
   private String billingAddressPostCode;
   private String billingAddressContry;
   private String billingAddressNumber;
-  private CustomerDocument[] documents;
+  private List<CustomerDocument> documents;
   private CustomerDevice primaryDevice;
-  private CustomerDevice[] devices;
-  private String[] channels;
+  private List<CustomerDevice> devices;
+  private List<String> channels;
   private HashMap<String, String> externalIds;
   private String lastAtualizacaoCadastralAt;
   private String reportedIncome;
@@ -55,8 +56,8 @@ public class Customer {
       String addressCity, String addressCountry, String addressLocality, LocalDateTime addressUpdatedAt,
       String billingAddressLine1, String billingAddressLine2, String billingAddressState, String billingAddressCity,
       String billingAddressLocaly, String billingAddressPostCode, String billingAddressContry,
-      String billingAddressNumber, CustomerDocument[] documents, CustomerDevice primaryDevice,
-      CustomerDevice[] devices, String[] channels, HashMap<String, String> externalIds,
+      String billingAddressNumber, List<CustomerDocument> documents, CustomerDevice primaryDevice,
+      List<CustomerDevice> devices, List<String> channels, HashMap<String, String> externalIds,
       String lastAtualizacaoCadastralAt,
       String reportedIncome, String mothersName, Integer invitations) {
     this.cpf = cpf;
@@ -330,11 +331,11 @@ public class Customer {
     this.billingAddressNumber = billingAddressNumber;
   }
 
-  public CustomerDocument[] getDocuments() {
+  public List<CustomerDocument> getDocuments() {
     return documents;
   }
 
-  public void setDocuments(CustomerDocument[] documents) {
+  public void setDocuments(List<CustomerDocument> documents) {
     this.documents = documents;
   }
 
@@ -346,19 +347,19 @@ public class Customer {
     this.primaryDevice = primaryDevice;
   }
 
-  public CustomerDevice[] getDevices() {
+  public List<CustomerDevice> getDevices() {
     return devices;
   }
 
-  public void setDevices(CustomerDevice[] devices) {
+  public void setDevices(List<CustomerDevice> devices) {
     this.devices = devices;
   }
 
-  public String[] getChannels() {
+  public List<String> getChannels() {
     return channels;
   }
 
-  public void setChannels(String[] channels) {
+  public void setChannels(List<String> channels) {
     this.channels = channels;
   }
 
@@ -401,4 +402,5 @@ public class Customer {
   public void setInvitations(Integer invitations) {
     this.invitations = invitations;
   }
+
 }
