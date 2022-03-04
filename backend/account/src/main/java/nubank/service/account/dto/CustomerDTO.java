@@ -2,49 +2,83 @@ package nubank.service.account.dto;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import nubank.service.account.dto.CustomerDocumentDTO;
+import nubank.service.account.domain.Customer;
 import nubank.service.account.dto.CustomerDeviceDTO;
 
 public class CustomerDTO {
 
   private String cpf;
   private String name;
+  @JsonProperty("printed_name")
   private String printedName;
+  @JsonProperty("prefered_name")
   private String preferedName;
   private String email;
   private String phone;
   private String nationality;
+  @JsonProperty("marital_status")
   private String maritalStatus;
   private String dog;
   private String profession;
   private String gender;
+  @JsonProperty("address_line1")
   private String addressline1;
+  @JsonProperty("address_line2")
   private String addressline2;
+  @JsonProperty("address_state")
   private String addressState;
+  @JsonProperty("address_number")
   private String addressNumber;
+  @JsonProperty("address_postcode")
   private String addressPostcode;
+  @JsonProperty("address_city")
   private String addressCity;
+  @JsonProperty("address_country")
   private String addressCountry;
+  @JsonProperty("address_locality")
   private String addressLocality;
+  @JsonProperty("address_updated_at")
   private LocalDateTime addressUpdatedAt;
+  @JsonProperty("billing_address_line1")
   private String billingAddressLine1;
+  @JsonProperty("billing_address_line2")
   private String billingAddressLine2;
+  @JsonProperty("billing_address_state")
   private String billingAddressState;
+  @JsonProperty("billing_address_city")
   private String billingAddressCity;
+  @JsonProperty("billing_address_localy")
   private String billingAddressLocaly;
+  @JsonProperty("billing_address_postcode")
   private String billingAddressPostCode;
+  @JsonProperty("billing_address_contry")
   private String billingAddressContry;
+  @JsonProperty("billing_address_number")
   private String billingAddressNumber;
-  private CustomerDocumentDTO[] documents;
+  private List<CustomerDocumentDTO> documents;
+  @JsonProperty("primary_device")
   private CustomerDeviceDTO primaryDevice;
-  private CustomerDeviceDTO[] devices;
-  private String[] channels;
+  private List<CustomerDeviceDTO> devices;
+  private List<String> channels;
+  @JsonProperty("external_ids")
   private HashMap<String, String> externalIds;
+  @JsonProperty("last_atualizacao_cadastral_at")
   private String lastAtualizacaoCadastralAt;
+  @JsonProperty("reported_income")
   private String reportedIncome;
+  @JsonProperty("mothers_name")
   private String mothersName;
   private Integer invitations;
+
+  @Deprecated
+  public CustomerDTO() {
+
+  }
 
   public CustomerDTO(String cpf, String name, String printedName, String preferedName, String email,
       String phone, String nationality, String maritalStatus, String dog, String profession, String gender,
@@ -52,8 +86,8 @@ public class CustomerDTO {
       String addressCity, String addressCountry, String addressLocality, LocalDateTime addressUpdatedAt,
       String billingAddressLine1, String billingAddressLine2, String billingAddressState, String billingAddressCity,
       String billingAddressLocaly, String billingAddressPostCode, String billingAddressContry,
-      String billingAddressNumber, CustomerDocumentDTO[] documents, CustomerDeviceDTO primaryDevice,
-      CustomerDeviceDTO[] devices, String[] channels, HashMap<String, String> externalIds,
+      String billingAddressNumber, List<CustomerDocumentDTO> documents, CustomerDeviceDTO primaryDevice,
+      List<CustomerDeviceDTO> devices, List<String> channels, HashMap<String, String> externalIds,
       String lastAtualizacaoCadastralAt,
       String reportedIncome, String mothersName, Integer invitations) {
     this.cpf = cpf;
@@ -319,11 +353,11 @@ public class CustomerDTO {
     this.billingAddressNumber = billingAddressNumber;
   }
 
-  public CustomerDocumentDTO[] getDocuments() {
+  public List<CustomerDocumentDTO> getDocuments() {
     return documents;
   }
 
-  public void setDocuments(CustomerDocumentDTO[] documents) {
+  public void setDocuments(List<CustomerDocumentDTO> documents) {
     this.documents = documents;
   }
 
@@ -335,19 +369,19 @@ public class CustomerDTO {
     this.primaryDevice = primaryDevice;
   }
 
-  public CustomerDeviceDTO[] getDevices() {
+  public List<CustomerDeviceDTO> getDevices() {
     return devices;
   }
 
-  public void setDevices(CustomerDeviceDTO[] devices) {
+  public void setDevices(List<CustomerDeviceDTO> devices) {
     this.devices = devices;
   }
 
-  public String[] getChannels() {
+  public List<String> getChannels() {
     return channels;
   }
 
-  public void setChannels(String[] channels) {
+  public void setChannels(List<String> channels) {
     this.channels = channels;
   }
 
@@ -389,5 +423,20 @@ public class CustomerDTO {
 
   public void setInvitations(Integer invitations) {
     this.invitations = invitations;
+  }
+
+  public Customer toEntity() {
+    return new Customer(getCpf(), getName(), getPrintedName(), getPreferedName(), getEmail(), getPhone(),
+        getNationality(), getMaritalStatus(), getDog(), getProfession(), getGender(), getAddressline1(),
+        getAddressline2(), getAddressState(), getAddressNumber(), getAddressPostcode(), getAddressCity(),
+        getAddressCountry(), getAddressLocality(), getAddressUpdatedAt(), getBillingAddressLine1(),
+        getBillingAddressLine2(), getBillingAddressState(), getBillingAddressCity(), getBillingAddressLocaly(),
+        getBillingAddressPostCode(),
+        getBillingAddressContry(), getBillingAddressNumber(),
+        getDocuments().stream().map(CustomerDocumentDTO::toEntity).collect(Collectors.toList()),
+        getPrimaryDevice().toEntity(),
+        getDevices().stream().map(CustomerDeviceDTO::toEntity).collect(Collectors.toList()),
+        getChannels(), getExternalIds(), getLastAtualizacaoCadastralAt(), getReportedIncome(), getMothersName(),
+        getInvitations());
   }
 }
