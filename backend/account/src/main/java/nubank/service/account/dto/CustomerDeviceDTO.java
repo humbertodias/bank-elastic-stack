@@ -1,10 +1,16 @@
 package nubank.service.account.dto;
 
+import nubank.service.account.domain.CustomerDevice;
+
 public class CustomerDeviceDTO {
 
   private String deviceId;
   private String userAgent;
   private String pushToken;
+
+  @Deprecated
+  public CustomerDeviceDTO() {
+  }
 
   public CustomerDeviceDTO(String deviceId, String userAgent, String pushToken) {
 
@@ -36,6 +42,10 @@ public class CustomerDeviceDTO {
 
   public void setPushToken(String pushToken) {
     this.pushToken = pushToken;
+  }
+
+  public CustomerDevice toEntity() {
+    return new CustomerDevice(getDeviceId(), getUserAgent(), getPushToken());
   }
 
 }
