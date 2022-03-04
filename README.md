@@ -2,7 +2,7 @@
 
 Experiment of a simple elastic stack that tries to implement different ways to achieve the horizontal scalability.
 
-1. Docker compose
+1. Docker - Compose
 2. Kubernetes - Native
 3. Kubernetes - Helm
 

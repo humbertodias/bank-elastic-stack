@@ -106,11 +106,11 @@ volumes:
 networks: 
     frontend:
       driver: bridge
-      ipam:
-        config:
-          - subnet: 172.168.57.0/24
+      # ipam:
+      #   config:
+      #     - subnet: 172.168.57.0/24
     backend:
       driver: bridge
-      ipam:
-        config:
-          - subnet: 172.168.58.0/24
+      # ipam:
+      #   config:
+      #     - subnet: 172.168.58.0/24

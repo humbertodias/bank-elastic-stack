@@ -102,3 +102,35 @@ helm-uninstall:
 clean:
 	cd app/backend && rm -rf account/build income/build wallet/build
 	cd app/frontend && rm -rf web/build
+
+
+argocd-install:
+	wget https://github.com/argoproj/argo-cd/releases/download/v2.2.5/argocd-linux-amd64 -O /usr/local/bin/argocd
+	chmod +x /usr/local/bin/argocd 
+	
+	kubectl create namespace argocd
+	kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.2.5/manifests/install.yaml
+	sleep 20
+
+	echo "Visit http://localhost:8080 using user:admin password:"
+	kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+	@echo ""
+	kubectl port-forward svc/argocd-server -n argocd 8080:443 &
+	
+	argocd login localhost:8080 --username admin --insecure
+
+	kubectl create namespace argo-bank
+	argocd app create mongo --repo https://github.com/humbertodias/bank-elastic-stack.git --path infra/helm/mongo --dest-namespace argo-bank --dest-server https://kubernetes.default.svc --helm-set replicaCount=0
+	argocd app create account --repo https://github.com/humbertodias/bank-elastic-stack.git --path infra/helm/account --dest-namespace argo-bank --dest-server https://kubernetes.default.svc --helm-set replicaCount=0
+
+
+	
+
+
+
+
+argocd-uninstall:
+	kubectl delete namespaces argocd
+
+
+

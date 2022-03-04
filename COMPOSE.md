@@ -1,7 +1,7 @@
 # Docker compose
 
 ```
-docker-compose up -d
+docker compose up -d
 ```
 
 Then access 
@@ -16,12 +16,12 @@ http://localhost:3002
 Scale 
 
 ```
-docker-compose up --scale wallet=2 --scale income=2 -d
+docker compose up --scale account=2 --scale wallet=3 --scale income=4 -d
 ```
 
 
 Stop
 
 ```
-docker-compose down
+docker compose down
 ```
