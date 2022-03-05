@@ -1,5 +1,6 @@
 package nubank.service.wallet.config;
 
+import core.Helper;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -17,8 +18,7 @@ public class OpenApiConfiguration {
                 .addServersItem(server("http://localhost:3005"))
                 .addServersItem(server("http://localhost:8080"))
                 .components(new Components())
-                .info(new Info().title("API").description(
-                        "Spring Boot RESTful service using springdoc-openapi and OpenAPI 3."));
+                .info(new Info().title("API").description(Helper.hostname()));
     }
 
     private Server server(String url){

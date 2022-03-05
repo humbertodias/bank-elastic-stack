@@ -25,7 +25,9 @@ services:
       - backend
 
   income:
-    build: app/backend/income
+    build:
+      context: app/backend
+      dockerfile: income/Dockerfile
     volumes:
       - gradle-cache:/home/gradle/.gradle
     environment:
@@ -41,7 +43,9 @@ services:
       - backend
 
   wallet:
-    build: app/backend/wallet
+    build:
+      context: app/backend
+      dockerfile: wallet/Dockerfile
     volumes:
       - gradle-cache:/home/gradle/.gradle
     environment:
@@ -57,7 +61,9 @@ services:
       - backend
 
   account:
-    build: app/backend/account
+    build:
+      context: app/backend
+      dockerfile: account/Dockerfile
     volumes:
       - gradle-cache:/home/gradle/.gradle
     environment:

@@ -123,12 +123,6 @@ argocd-install:
 	argocd app create mongo --repo https://github.com/humbertodias/bank-elastic-stack.git --path infra/helm/mongo --dest-namespace argo-bank --dest-server https://kubernetes.default.svc --helm-set replicaCount=0
 	argocd app create account --repo https://github.com/humbertodias/bank-elastic-stack.git --path infra/helm/account --dest-namespace argo-bank --dest-server https://kubernetes.default.svc --helm-set replicaCount=0
 
-
-	
-
-
-
-
 argocd-uninstall:
 	kubectl delete namespaces argocd
 

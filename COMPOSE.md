@@ -16,7 +16,7 @@ http://localhost:3002
 Scale 
 
 ```
-docker compose up --scale account=2 --scale wallet=3 --scale income=4 -d
+docker compose up -d --scale account=2 --scale wallet=3 --scale income=4 
 ```
 
 

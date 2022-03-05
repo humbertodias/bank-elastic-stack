@@ -1,6 +1,6 @@
 # bank-elastic-stack
 
-Experiment of a simple elastic stack that tries to implement different ways to achieve the horizontal scalability.
+Elastic stack using :
 
 1. Docker - Compose
 2. Kubernetes - Native
@@ -20,7 +20,6 @@ Wallet/Income
 
 ![](doc/wallet.png)
 ![](doc/income-cdi.png)
-
 
 ## Infra
 * Load Balance - Redirecionador de requisições 
@@ -58,7 +57,6 @@ All Services
 - [ ] [Card](app/backend/card)     - Contains methods to retrieve the feed of transactions from the credit card
 - [ ] [Payment](app/backend/payment)  - Contains methods to create payment requests
 
-
 ## How to run
 
 1. [Compose](COMPOSE.md)
@@ -69,3 +67,4 @@ All Services
 
 * [mermaid-editor](https://mermaidjs.github.io/mermaid-live-editor)
 * [spring-boot-banner-generator](https://springhow.com/spring-boot-banner-generator/)
+* [kompose](https://kompose.io/)
