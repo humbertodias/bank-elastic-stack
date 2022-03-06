@@ -1,12 +1,11 @@
+CONTEXT=rancher-desktop
 NAMESPACE=bank
 
 docker-build:
-	cd app/backend/account && docker build . -t account:0.0.1-SNAPSHOT
-	cd app/backend/income && docker build . -t income:0.0.1-SNAPSHOT
-	cd app/backend/wallet && docker build . -t wallet:0.0.1-SNAPSHOT
-	#cd app/backend/account && ./gradlew bootBuildImage
-	#cd app/backend/income && ./gradlew bootBuildImage
-	#cd app/backend/wallet && ./gradlew bootBuildImage
+	cd app/backend && \
+	docker build . -f account/Dockerfile -t account:0.0.1-SNAPSHOT && \
+	docker build . -f income/Dockerfile -t income:0.0.1-SNAPSHOT && \
+	docker build . -f wallet/Dockerfile -t wallet:0.0.1-SNAPSHOT
 	cd app/frontend/web && docker build . -t web:0.0.1
 	cd app/frontend/lb && docker build . -t lb:0.0.1
 
@@ -44,13 +43,15 @@ k8s-delete:
 	lb-service.yaml,lb-deployment.yaml,\
 	swagger-ui-service.yaml,swagger-ui-deployment.yaml
 
+k8s-use-context:
+	kubectl config use-context $(CONTEXT)
+
 k8s-start:
 	$(MAKE) k8s-apply
 	sleep 10
 	$(MAKE) forward-port
 
 k8s-stop:
-	# $(MAKE) k8s-delete
 	$(MAKE) k8s-delete-namespace
 	$(MAKE) close-port
 
@@ -95,7 +96,6 @@ helm-upgrade:
 	helm upgrade --namespace $(NAMESPACE) --set name=swagger-ui swagger-ui infra/helm/swagger-ui
 
 helm-uninstall:
-	# helm ls --namespace $(NAMESPACE) -q | xargs helm uninstall
 	$(MAKE) k8s-delete-namespace
 	$(MAKE) close-port
 
