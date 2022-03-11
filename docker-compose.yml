@@ -110,7 +110,8 @@ services:
       - backend
 
   rabbitmq:
-    image: rabbitmq:management
+    build: app/data/rabbitmq
+    restart: always
     ports:
       - "5672:5672"
       - "15672:15672"
