@@ -24,6 +24,7 @@ k8s-apply:
 	$(MAKE) k8s-create-namespace
 	cd infra/k8s &&\
 	kubectl apply --namespace=$(NAMESPACE) -f mongo-data-persistentvolumeclaim.yaml,mongo-service.yaml,mongo-deployment.yaml,\
+	rabbitmq-service.yaml,rabbitmq-deployment.yaml,\
 	gradle-cache-persistentvolumeclaim.yaml,\
 	account-service.yaml,account-deployment.yaml,\
 	income-service.yaml,income-deployment.yaml,\
@@ -35,6 +36,7 @@ k8s-apply:
 k8s-delete:
 	cd infra/k8s &&\
 	kubectl delete -f mongo-data-persistentvolumeclaim.yaml,mongo-service.yaml,mongo-deployment.yaml,\
+	rabbitmq-service.yaml,rabbitmq-deployment.yaml,\
 	gradle-cache-persistentvolumeclaim.yaml,\
 	account-service.yaml,account-deployment.yaml,\
 	income-service.yaml,income-deployment.yaml,\
@@ -68,15 +70,18 @@ forward-port:
 	bash infra/port-forward.sh web 3001 $(NAMESPACE)
 	bash infra/port-forward.sh swagger-ui 3002 $(NAMESPACE)
 	bash infra/port-forward.sh lb 3005 $(NAMESPACE)
+	bash infra/port-forward.sh rabbitmq 15672 $(NAMESPACE)
 
 close-port:
 	lsof -t -i :3001 | xargs -r kill
 	lsof -t -i :3002 | xargs -r kill
 	lsof -t -i :3005 | xargs -r kill
+	lsof -t -i :15672 | xargs -r kill
 
 helm-install:
 	$(MAKE) k8s-create-namespace
 	helm install --namespace $(NAMESPACE) --set name=mongo mongo infra/helm/mongo
+	helm install --namespace $(NAMESPACE) --set name=rabbitmq rabbitmq infra/helm/rabbitmq
 	helm install --namespace $(NAMESPACE) --set name=account account infra/helm/account
 	helm install --namespace $(NAMESPACE) --set name=income income infra/helm/income
 	helm install --namespace $(NAMESPACE) --set name=wallet wallet infra/helm/wallet
@@ -88,6 +93,7 @@ helm-install:
 
 helm-upgrade:
 	helm upgrade --namespace $(NAMESPACE) --set name=mongo mongo infra/helm/mongo
+	helm upgrade --namespace $(NAMESPACE) --set name=rabbitmq rabbitmq infra/helm/rabbitmq
 	helm upgrade --namespace $(NAMESPACE) --set name=account account infra/helm/account
 	helm upgrade --namespace $(NAMESPACE) --set name=income income infra/helm/income
 	helm upgrade --namespace $(NAMESPACE) --set name=wallet wallet infra/helm/wallet

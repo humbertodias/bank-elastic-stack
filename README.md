@@ -10,6 +10,7 @@ Elastic stack using :
 
 * [rancher desktop](https://rancherdesktop.io/)
 * [helm](https://rancherdesktop.io/)
+* [k8slens](https://k8slens.dev/)
 
 ## Front
 * Web - Cliente responsivo 
