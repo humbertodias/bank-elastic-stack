@@ -8,10 +8,8 @@ Elastic stack using :
 
 ## Requirements
 
-* [docker](https://docs.docker.com/get-docker)
-* [docker-compose](https://docs.docker.com/compose/install)
-* [helm](https://rancherdesktop.io/)
 * [rancher desktop](https://rancherdesktop.io/)
+* [helm](https://rancherdesktop.io/)
 
 ## Front
 * Web - Cliente responsivo 
@@ -35,19 +33,22 @@ graph TD
     D -->|:27017| G[fa:fa-database NoSQL]
     E -->|:27017| G
     F -->|:27017| G
+    D -->|:5672 | H[fa:fa-database RabbitMQ]
 ```
 
 All Services 
 
-| Service      | Network |  Port |
-|--------------|:-------:|------:|
-| Web          |  Front  |  3001 |
-| SwaggerUI    |  Front  |  3002 |
-| Load balance |  Front  |  3005 |
-| Income       |  Back   |  3005 |
-| Wallet       |  Back   |  3005 |
-| Account      |  Back   |  3005 |
-| MongoDB      |  Back   | 27017 |
+| Service      | Network |   Port |
+|--------------|:-------:|-------:|
+| Web          |  Front  |   3001 |
+| SwaggerUI    |  Front  |   3002 |
+| Load balance |  Front  |   3005 |
+| RabbitMQ     |  Front  |  15672 |
+| Income       |  Back   |   3005 |
+| Wallet       |  Back   |   3005 |
+| Account      |  Back   |   3005 |
+| MongoDB      |  Back   |  27017 |
+| RabbitMQ     |  Back   |   5672 |
 
 ## Backend
 - [x] [Income](app/backend/income)  - Microsserviço responsável pela parte de rendimentos
