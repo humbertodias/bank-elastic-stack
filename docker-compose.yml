@@ -68,6 +68,10 @@ services:
       - gradle-cache:/home/gradle/.gradle
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/nubank-account
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
     expose:
       - "8080"
     deploy:
@@ -100,8 +104,19 @@ services:
       URLS: "[
             { url: 'http://localhost:3005/income/openapi', name: 'Income'},
             { url: 'http://localhost:3005/wallet/openapi', name: 'Wallet'},
-            { url: 'http://localhost:3005/accoutn/openapi', name: 'Account'},
+            { url: 'http://localhost:3005/account/openapi', name: 'Account'},
            ]"
+    networks:
+      - backend
+
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
     networks:
       - backend
 
