@@ -28,6 +28,9 @@ spec:
       containers:
         - image: docker.io/hldtux/web:0.0.1
           name: web
+          env:
+            - name: REACT_APP_LB_HOST
+              value: lb
           ports:
             - containerPort: 3000
           resources: {}

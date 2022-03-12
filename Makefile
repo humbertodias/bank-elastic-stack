@@ -1,5 +1,9 @@
-CONTEXT=rancher-desktop
 NAMESPACE=bank
+
+AWS_CONTEXT=arn:aws:eks:sa-east-1:110464496991:cluster/my-cluster
+AWS_REGION=sa-east-1
+AWS_USERNAME=humbertodias-common
+AWS_CLUSTER_NAME=my-cluster
 
 docker-build:
 	cd app/backend && \
@@ -45,8 +49,11 @@ k8s-delete:
 	lb-service.yaml,lb-deployment.yaml,\
 	swagger-ui-service.yaml,swagger-ui-deployment.yaml
 
-k8s-use-context:
-	kubectl config use-context $(CONTEXT)
+k8s-use-context-rancher:
+	kubectl config use-context rancher-desktop
+
+k8s-use-context-aws:
+	kubectl config use-context $(AWS_CONTEXT)
 
 k8s-start:
 	$(MAKE) k8s-apply
@@ -109,6 +116,8 @@ clean:
 	cd app/backend && rm -rf account/build income/build wallet/build
 	cd app/frontend && rm -rf web/build
 
+clean-gradle:
+	find . -name ".gradle" -exec rm -rf "{}" \;
 
 argocd-install:
 	wget https://github.com/argoproj/argo-cd/releases/download/v2.2.5/argocd-linux-amd64 -O /usr/local/bin/argocd
@@ -132,5 +141,10 @@ argocd-install:
 argocd-uninstall:
 	kubectl delete namespaces argocd
 
+aws-login:
+	aws eks update-kubeconfig --region $(AWS_REGION) --name $(AWS_CLUSTER_NAME)
 
-
+aws-expose:
+	kubectl expose deployment web --type=LoadBalancer --name=web-service -n $(NAMESPACE)
+	kubectl expose deployment lb --type=LoadBalancer --name=lb-service -n $(NAMESPACE)
+	kubectl get svc -n $(NAMESPACE)

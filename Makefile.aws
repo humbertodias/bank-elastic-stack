@@ -1,0 +1,45 @@
+AWS_CONTEXT=arn:aws:eks:sa-east-1:110464496991:cluster/my-cluster
+AWS_REGION=sa-east-1
+AWS_USERNAME=humbertodias-common
+AWS_CLUSTER_NAME=my-cluster
+AWS_REGISTRY_ALIAS=l7o4u4y4
+
+aws-login:
+	eksctl create cluster $(AWS_CLUSTER_NAME)
+	aws eks update-kubeconfig --region $(AWS_REGION) --name $(AWS_CLUSTER_NAME)
+
+aws-use-context:
+	kubectl config use-context $(AWS_CONTEXT)
+
+aws-account-id:
+	$(eval AWS_ACCOUNT_ID=`aws sts get-caller-identity | jq .Account -r`)
+
+aws-ecr-private-login:	aws-account-id
+	aws ecr get-login-password --region $(AWS_REGION) | docker login --username AWS --password-stdin $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com
+
+aws-ecr-private-push:	aws-ecr-private-login
+	docker tag account:0.0.1-SNAPSHOT $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/account:0.0.1-SNAPSHOT
+	docker tag income:0.0.1-SNAPSHOT $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/income:0.0.1-SNAPSHOT
+	docker tag wallet:0.0.1-SNAPSHOT $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/wallet:0.0.1-SNAPSHOT
+	docker tag web:0.0.1 $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/web:0.0.1
+	docker tag lb:0.0.1 $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/lb:0.0.1
+	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/account:0.0.1-SNAPSHOT
+	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/income:0.0.1-SNAPSHOT
+	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/wallet:0.0.1-SNAPSHOT
+	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/web:0.0.1
+	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/lb:0.0.1
+
+aws-ecr-public-login:	aws-account-id
+	aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
+
+aws-ecr-public-push:	aws-ecr-public-login
+	docker tag account:0.0.1-SNAPSHOT public.ecr.aws/$(AWS_REGISTRY_ALIAS)/account:0.0.1-SNAPSHOT
+	docker tag income:0.0.1-SNAPSHOT public.ecr.aws/$(AWS_REGISTRY_ALIAS)/income:0.0.1-SNAPSHOT
+	docker tag wallet:0.0.1-SNAPSHOT public.ecr.aws/$(AWS_REGISTRY_ALIAS)/wallet:0.0.1-SNAPSHOT
+	docker tag web:0.0.1 public.ecr.aws/$(AWS_REGISTRY_ALIAS)/web:0.0.1
+	docker tag lb:0.0.1 public.ecr.aws/$(AWS_REGISTRY_ALIAS)/lb:0.0.1
+	docker push public.ecr.aws/$(AWS_REGISTRY_ALIAS)/account:0.0.1-SNAPSHOT
+	docker push public.ecr.aws/$(AWS_REGISTRY_ALIAS)/income:0.0.1-SNAPSHOT
+	docker push public.ecr.aws/$(AWS_REGISTRY_ALIAS)/wallet:0.0.1-SNAPSHOT
+	docker push public.ecr.aws/$(AWS_REGISTRY_ALIAS)/web:0.0.1
+	docker push public.ecr.aws/$(AWS_REGISTRY_ALIAS)/lb:0.0.1
