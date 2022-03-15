@@ -56,8 +56,8 @@ k8s-memory:
 	kubectl top pod --namespace=$(NAMESPACE)
 
 k8s-expose:
-	kubectl expose deployment web --name=web-lb --type=LoadBalancer  -n $(NAMESPACE)
-	kubectl expose deployment swagger-ui --name=swagger-ui-lb --type=LoadBalancer  -n $(NAMESPACE)
+	kubectl expose deployment web --name=web-lb --type=LoadBalancer -n $(NAMESPACE)
+	kubectl expose deployment swagger-ui --name=swagger-ui-lb --type=LoadBalancer -n $(NAMESPACE)
 	kubectl expose deployment lb --name=lb-lb --type=LoadBalancer -n $(NAMESPACE)
 	kubectl expose deployment rabbitmq --name=rabbitmq-lb --type=LoadBalancer -n $(NAMESPACE)
 	kubectl get svc -n $(NAMESPACE)
@@ -141,7 +141,7 @@ aws-cli-install:
 	curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 	unzip awscliv2.zip
 	sudo ./aws/install
-	rm aws awscliv2.zip -rf
+	rm -rf aws awscliv2.zip
 
 aws-configure:
 	aws configure import --csv file://~/Downloads/humbertodias-common_accessKeys.csv
