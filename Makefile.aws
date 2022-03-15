@@ -5,7 +5,7 @@ AWS_CLUSTER_NAME=my-cluster
 AWS_REGISTRY_ALIAS=l7o4u4y4
 
 aws-login:
-	eksctl create cluster $(AWS_CLUSTER_NAME)
+	#eksctl create cluster $(AWS_CLUSTER_NAME)
 	aws eks update-kubeconfig --region $(AWS_REGION) --name $(AWS_CLUSTER_NAME)
 
 aws-use-context:
