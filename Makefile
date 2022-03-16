@@ -41,6 +41,18 @@ k8s-start:
 	$(MAKE) k8s-apply
 	sleep 10
 	$(MAKE) forward-port
+	$(MAKE) k8s-set-env
+
+k8s-set-env:
+	kubectl expose deployment lb --name=lb-lb --type=LoadBalancer -n $(NAMESPACE)
+	sleep 10
+	$(eval HOST=`kubectl get svc lb-lb -n bank -o json | jq .status.loadBalancer.ingress[].ip -r`)
+	$(eval PORT=`kubectl get svc lb-lb -n bank -o json | jq .spec.ports[].nodePort`)
+	echo "$(HOST):$(PORT)"
+	kubectl set env deployment/web -n bank REACT_APP_LB_HOST=localhost
+	kubectl set env deployment/web -n bank REACT_APP_LB_PORT=$(PORT)
+	sleep 10
+	bash infra/port-forward.sh web 3001 $(NAMESPACE)
 
 k8s-stop:
 	$(MAKE) k8s-delete-namespace
@@ -56,7 +68,7 @@ k8s-memory:
 	kubectl top pod --namespace=$(NAMESPACE)
 
 k8s-expose:
-	kubectl expose deployment web --name=web-lb --type=LoadBalancer -n $(NAMESPACE)
+	#kubectl expose deployment web --name=web-lb --type=LoadBalancer -n $(NAMESPACE)
 	kubectl expose deployment swagger-ui --name=swagger-ui-lb --type=LoadBalancer -n $(NAMESPACE)
 	kubectl expose deployment lb --name=lb-lb --type=LoadBalancer -n $(NAMESPACE)
 	kubectl expose deployment rabbitmq --name=rabbitmq-lb --type=LoadBalancer -n $(NAMESPACE)

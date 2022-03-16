@@ -1,6 +1,7 @@
-const httpRequest = ({ port = 3005, endpoint, method, data }) => {
-  const lb_host = process.env.REACT_APP_LB_HOST || 'localhost';
-  const url = new URL(`http://${lb_host}:${port}/${endpoint}`);
+const httpRequest = ({ endpoint, method, data }) => {
+  const host = process.env.REACT_APP_LB_HOST || 'localhost';
+  const port = process.env.REACT_APP_LB_PORT || 3005;
+  const url = new URL(`http://${host}:${port}/${endpoint}`);
 
   return fetch(url, {
     method,

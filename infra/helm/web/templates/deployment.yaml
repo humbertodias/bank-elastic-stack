@@ -35,7 +35,9 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: REACT_APP_LB_HOST
-              value: lb
+              value: localhost
+            - name: REACT_APP_LB_PORT
+              value: "3005"
           ports:
             - name: http
               containerPort: 3000

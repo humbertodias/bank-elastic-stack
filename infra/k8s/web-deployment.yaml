@@ -30,7 +30,9 @@ spec:
           name: web
           env:
             - name: REACT_APP_LB_HOST
-              value: lb
+              value: localhost
+            - name: REACT_APP_LB_PORT
+              value: "3005"
           ports:
             - containerPort: 3000
           resources: {}
