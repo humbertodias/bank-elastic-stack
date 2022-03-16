@@ -41,7 +41,7 @@ k8s-start:
 	$(MAKE) k8s-apply
 	sleep 10
 	$(MAKE) forward-port
-	$(MAKE) k8s-set-env
+	#$(MAKE) k8s-set-env
 
 k8s-set-env:
 	kubectl expose deployment lb --name=lb-lb --type=LoadBalancer -n $(NAMESPACE)
