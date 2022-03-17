@@ -1,5 +1,9 @@
-CONTEXT=rancher-desktop
 NAMESPACE=bank
+
+AWS_CONTEXT=arn:aws:eks:sa-east-1:110464496991:cluster/my-cluster
+AWS_REGION=sa-east-1
+AWS_USERNAME=humbertodias-common
+AWS_CLUSTER_NAME=my-cluster
 
 docker-build:
 	cd app/backend && \
@@ -22,36 +26,33 @@ docker-rmi:
 
 k8s-apply:
 	$(MAKE) k8s-create-namespace
-	cd infra/k8s &&\
-	kubectl apply --namespace=$(NAMESPACE) -f mongo-data-persistentvolumeclaim.yaml,mongo-service.yaml,mongo-deployment.yaml,\
-	rabbitmq-service.yaml,rabbitmq-deployment.yaml,\
-	gradle-cache-persistentvolumeclaim.yaml,\
-	account-service.yaml,account-deployment.yaml,\
-	income-service.yaml,income-deployment.yaml,\
-	wallet-service.yaml,wallet-deployment.yaml,\
-	web-service.yaml,web-deployment.yaml,\
-	lb-service.yaml,lb-deployment.yaml,\
-	swagger-ui-service.yaml,swagger-ui-deployment.yaml
+	kubectl apply --namespace=$(NAMESPACE) -f infra/k8s -R
 
 k8s-delete:
-	cd infra/k8s &&\
-	kubectl delete -f mongo-data-persistentvolumeclaim.yaml,mongo-service.yaml,mongo-deployment.yaml,\
-	rabbitmq-service.yaml,rabbitmq-deployment.yaml,\
-	gradle-cache-persistentvolumeclaim.yaml,\
-	account-service.yaml,account-deployment.yaml,\
-	income-service.yaml,income-deployment.yaml,\
-	wallet-service.yaml,wallet-deployment.yaml,\
-	web-service.yaml,web-deployment.yaml,\
-	lb-service.yaml,lb-deployment.yaml,\
-	swagger-ui-service.yaml,swagger-ui-deployment.yaml
+	kubectl delete --namespace=$(NAMESPACE) -f infra/k8s -R
 
-k8s-use-context:
-	kubectl config use-context $(CONTEXT)
+k8s-use-context-rancher:
+	kubectl config use-context rancher-desktop
+
+k8s-use-context-aws:
+	kubectl config use-context $(AWS_CONTEXT)
 
 k8s-start:
 	$(MAKE) k8s-apply
 	sleep 10
 	$(MAKE) forward-port
+	#$(MAKE) k8s-set-env
+
+k8s-set-env:
+	kubectl expose deployment lb --name=lb-lb --type=LoadBalancer -n $(NAMESPACE)
+	sleep 10
+	$(eval HOST=`kubectl get svc lb-lb -n bank -o json | jq .status.loadBalancer.ingress[].ip -r`)
+	$(eval PORT=`kubectl get svc lb-lb -n bank -o json | jq .spec.ports[].nodePort`)
+	echo "$(HOST):$(PORT)"
+	kubectl set env deployment/web -n bank REACT_APP_LB_HOST=localhost
+	kubectl set env deployment/web -n bank REACT_APP_LB_PORT=$(PORT)
+	sleep 10
+	bash infra/port-forward.sh web 3001 $(NAMESPACE)
 
 k8s-stop:
 	$(MAKE) k8s-delete-namespace
@@ -65,6 +66,20 @@ k8s-delete-namespace:
 
 k8s-memory:
 	kubectl top pod --namespace=$(NAMESPACE)
+
+k8s-expose:
+	#kubectl expose deployment web --name=web-lb --type=LoadBalancer -n $(NAMESPACE)
+	kubectl expose deployment swagger-ui --name=swagger-ui-lb --type=LoadBalancer -n $(NAMESPACE)
+	kubectl expose deployment lb --name=lb-lb --type=LoadBalancer -n $(NAMESPACE)
+	kubectl expose deployment rabbitmq --name=rabbitmq-lb --type=LoadBalancer -n $(NAMESPACE)
+	kubectl get svc -n $(NAMESPACE)
+
+k8s-unexpose:
+	kubectl delete service web-lb -n $(NAMESPACE)
+	kubectl delete service swagger-ui-lb -n $(NAMESPACE)
+	kubectl delete service lb-lb -n $(NAMESPACE)
+	kubectl delete service rabbitmq-lb -n $(NAMESPACE)
+	kubectl get svc -n $(NAMESPACE)
 
 forward-port:
 	bash infra/port-forward.sh web 3001 $(NAMESPACE)
@@ -109,6 +124,8 @@ clean:
 	cd app/backend && rm -rf account/build income/build wallet/build
 	cd app/frontend && rm -rf web/build
 
+clean-gradle:
+	find . -name ".gradle" -exec rm -rf "{}" \;
 
 argocd-install:
 	wget https://github.com/argoproj/argo-cd/releases/download/v2.2.5/argocd-linux-amd64 -O /usr/local/bin/argocd
@@ -132,5 +149,15 @@ argocd-install:
 argocd-uninstall:
 	kubectl delete namespaces argocd
 
+aws-cli-install:
+	curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+	unzip awscliv2.zip
+	sudo ./aws/install
+	rm -rf aws awscliv2.zip
 
+aws-configure:
+	aws configure import --csv file://~/Downloads/humbertodias-common_accessKeys.csv
+	aws configure list
 
+aws-login:
+	aws eks update-kubeconfig --region $(AWS_REGION) --name $(AWS_CLUSTER_NAME)
