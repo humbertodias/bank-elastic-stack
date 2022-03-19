@@ -39,18 +39,18 @@ graph TD
 
 All Services 
 
-| Service      | Network |   Port |
-|--------------|:-------:|-------:|
-| Web          |  Front  |   3001 |
-| SwaggerUI    |  Front  |   3002 |
-| Load balance |  Front  |   3005 |
-| RabbitMQ     |  Front  |  15672 |
-| Income       |  Back   |   3005 |
-| Wallet       |  Back   |   3005 |
-| Account      |  Back   |   3005 |
-| Queue        |  Back   |   3005 |
-| MongoDB      |  Back   |  27017 |
-| RabbitMQ     |  Back   |   5672 |
+| Service       | Network |   Port |
+|---------------|:-------:|-------:|
+| Web           |  Front  |   3001 |
+| SwaggerUI     |  Front  |   3002 |
+| Load balance  |  Front  |   3005 |
+| RabbitMQ      |  Front  |  15672 |
+| Income        |  Back   |   3005 |
+| Wallet        |  Back   |   3005 |
+| Account       |  Back   |   3005 |
+| Message Queue |  Back   |   3005 |
+| MongoDB       |  Back   |  27017 |
+| RabbitMQ      |  Back   |   5672 |
 
 ## Backend
 - [x] [Income](app/backend/income)  - Microsserviço responsável pela parte de rendimentos

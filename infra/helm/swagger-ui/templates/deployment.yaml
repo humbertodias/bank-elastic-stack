@@ -33,7 +33,7 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           env:
             - name: URLS
-              value: '[ { url: ''http://localhost:3005/income/openapi'', name: ''Income''}, { url: ''http://localhost:3005/wallet/openapi'', name: ''Wallet''}, { url: ''http://localhost:3005/account/openapi'', name: ''Account''}, ]'
+              value: '[ { url: ''http://localhost:3005/income/openapi'', name: ''Income''}, { url: ''http://localhost:3005/wallet/openapi'', name: ''Wallet''}, { url: ''http://localhost:3005/account/openapi'', name: ''Account''}, { url: ''http://localhost:3005/mq/openapi'', name: ''MQ''}, ]'
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:

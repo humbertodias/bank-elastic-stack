@@ -80,14 +80,13 @@ services:
     networks:
       - backend
 
-  queue:
+  mq:
     build:
       context: app/backend
-      dockerfile: queue/Dockerfile
+      dockerfile: mq/Dockerfile
     volumes:
       - gradle-cache:/home/gradle/.gradle
     environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/nubank-account
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_RABBITMQ_PORT=5672
       - SPRING_RABBITMQ_USERNAME=guest
@@ -125,7 +124,7 @@ services:
             { url: 'http://localhost:3005/income/openapi', name: 'Income'},
             { url: 'http://localhost:3005/wallet/openapi', name: 'Wallet'},
             { url: 'http://localhost:3005/account/openapi', name: 'Account'},
-            { url: 'http://localhost:3005/queue/openapi', name: 'Queue'},
+            { url: 'http://localhost:3005/mq/openapi', name: 'MQ'},
            ]"
     networks:
       - backend

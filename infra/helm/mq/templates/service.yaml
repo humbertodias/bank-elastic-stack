@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "queue.fullname" . }}
+  name: {{ include "mq.fullname" . }}
   labels:
-    {{- include "queue.labels" . | nindent 4 }}
+    {{- include "mq.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,4 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "queue.selectorLabels" . | nindent 4 }}
+    {{- include "mq.selectorLabels" . | nindent 4 }}

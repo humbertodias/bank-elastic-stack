@@ -29,7 +29,7 @@ spec:
           name: swagger-ui
           env:
             - name: URLS
-              value: '[ { url: ''http://localhost:3005/income/openapi'', name: ''Income''}, { url: ''http://localhost:3005/wallet/openapi'', name: ''Wallet''}, { url: ''http://localhost:3005/account/openapi'', name: ''Account''},  { url: ''http://localhost:3005/queue/openapi'', name: ''Queue''}, ]'
+              value: '[ { url: ''http://localhost:3005/income/openapi'', name: ''Income''}, { url: ''http://localhost:3005/wallet/openapi'', name: ''Wallet''}, { url: ''http://localhost:3005/account/openapi'', name: ''Account''},  { url: ''http://localhost:3005/mq/openapi'', name: ''MQ''}, ]'
           ports:
             - containerPort: 8080
           resources: {}
