@@ -9,7 +9,8 @@ docker-build:
 	cd app/backend && \
 	docker build . -f account/Dockerfile -t account:0.0.1-SNAPSHOT && \
 	docker build . -f income/Dockerfile -t income:0.0.1-SNAPSHOT && \
-	docker build . -f wallet/Dockerfile -t wallet:0.0.1-SNAPSHOT
+	docker build . -f wallet/Dockerfile -t wallet:0.0.1-SNAPSHOT && \
+	docker build . -f queue/Dockerfile -t queue:0.0.1-SNAPSHOT
 	cd app/frontend/web && docker build . -t web:0.0.1
 	cd app/frontend/lb && docker build . -t lb:0.0.1
 
@@ -17,12 +18,13 @@ docker-push:
 	docker tag account:0.0.1-SNAPSHOT hldtux/account:0.0.1-SNAPSHOT && docker push hldtux/account:0.0.1-SNAPSHOT
 	docker tag income:0.0.1-SNAPSHOT hldtux/income:0.0.1-SNAPSHOT && docker push hldtux/income:0.0.1-SNAPSHOT
 	docker tag wallet:0.0.1-SNAPSHOT hldtux/wallet:0.0.1-SNAPSHOT && docker push hldtux/wallet:0.0.1-SNAPSHOT
+	docker tag queue:0.0.1-SNAPSHOT hldtux/queue:0.0.1-SNAPSHOT && docker push hldtux/queue:0.0.1-SNAPSHOT
 	docker tag web:0.0.1 hldtux/web:0.0.1 && docker push hldtux/web:0.0.1
 	docker tag lb:0.0.1 hldtux/lb:0.0.1 && docker push hldtux/lb:0.0.1
 
 docker-rmi:
 	docker images -f "dangling=true" -q | xargs docker rmi -f 
-	echo account:0.0.1-SNAPSHOT income:0.0.1-SNAPSHOT wallet:0.0.1-SNAPSHOT hldtux/account:0.0.1-SNAPSHOT hldtux/income:0.0.1-SNAPSHOT hldtux/wallet:0.0.1-SNAPSHOT | xargs docker rmi -f
+	echo account:0.0.1-SNAPSHOT income:0.0.1-SNAPSHOT wallet:0.0.1-SNAPSHOT hldtux/account:0.0.1-SNAPSHOT hldtux/income:0.0.1-SNAPSHOT hldtux/wallet:0.0.1-SNAPSHOT hldtux/queue:0.0.1-SNAPSHOT | xargs docker rmi -f
 
 k8s-apply:
 	$(MAKE) k8s-create-namespace
@@ -121,7 +123,7 @@ helm-uninstall:
 	$(MAKE) close-port
 
 clean:
-	cd app/backend && rm -rf account/build income/build wallet/build
+	cd app/backend && rm -rf account/build income/build wallet/build queue/build
 	cd app/frontend && rm -rf web/build
 
 clean-gradle:

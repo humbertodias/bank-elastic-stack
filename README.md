@@ -48,6 +48,7 @@ All Services
 | Income       |  Back   |   3005 |
 | Wallet       |  Back   |   3005 |
 | Account      |  Back   |   3005 |
+| Queue        |  Back   |   3005 |
 | MongoDB      |  Back   |  27017 |
 | RabbitMQ     |  Back   |   5672 |
 

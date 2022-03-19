@@ -1,1 +1,1 @@
-include 'core', 'account', 'income', 'wallet'
+include 'core', 'account', 'income', 'wallet', 'queue'

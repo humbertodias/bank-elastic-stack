@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: queue
+  name: queue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: queue
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/backend: "true"
+        io.kompose.service: queue
+    spec:
+      containers:
+        - env:
+            - name: SPRING_RABBITMQ_HOST
+              value: rabbitmq
+            - name: SPRING_RABBITMQ_PORT
+              value: "5672"
+            - name: SPRING_RABBITMQ_USERNAME
+              value: guest
+            - name: SPRING_RABBITMQ_PASSWORD
+              value: guest
+          image: docker.io/hldtux/queue:0.0.1-SNAPSHOT
+          name: account
+          ports:
+            - containerPort: 8080
+          resources: {}
+          volumeMounts:
+            - mountPath: /home/gradle/.gradle
+              name: gradle-cache
+      restartPolicy: Always
+      volumes:
+        - name: gradle-cache
+          persistentVolumeClaim:
+            claimName: gradle-cache
+status: {}

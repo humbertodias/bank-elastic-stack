@@ -1,4 +1,4 @@
-package bank.service.account.mq;
+package bank.queue.mq;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class QueueSender {
+public class QueueProducer {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
