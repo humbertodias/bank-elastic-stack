@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/account/customer-document")
+@RequestMapping("customer-document")
 public class CustomerDocumentController {
 
     @Autowired

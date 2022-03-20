@@ -1,4 +1,4 @@
-package bank.queue.config;
+package bank.mq.config;
 
 import core.Helper;
 import io.swagger.v3.oas.models.Components;
@@ -15,8 +15,8 @@ public class OpenApiConfiguration {
     public OpenAPI customOpenAPI() {
 
         return new OpenAPI()
-                .addServersItem(server("http://localhost:3005"))
-                .addServersItem(server("http://localhost:8080"))
+                .addServersItem(server("http://localhost:3005/mq/"))
+                .addServersItem(server("http://localhost:8080/"))
                 .components(new Components())
                 .info(new Info().title("API").description(Helper.hostname()));
     }

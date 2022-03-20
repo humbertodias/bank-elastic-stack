@@ -1,4 +1,5 @@
 ## Stack
+
 Projeto desenvolvido com Ionic + React.
 
 ## Como rodar o projeto
@@ -14,12 +15,19 @@ Projeto desenvolvido com Ionic + React.
 Após isso você poderá acessar o app pelo endereço:
 `http://localhost:8100/`
 
-## Dependências
 
-As requisições desse app chamam o serviço criado pelo projeto: [https://github.com/evelew/fiap-nubank-proxy](https://github.com/evelew/fiap-nubank-proxy).
+# Push Notification
 
-Para ver o app funcionando por completo baixe esse projeto também!
+1. Inicie a stack
 
-## Objetivo
+```
+docker compose up
+```
 
-Projeto desenvolvido como trabalho do módulo de microsserviços do MBA de Engenharia de Software da FIAP.
+2. Permita a execuçao da notificaçao e copie o token gerado em
+
+http://localhost:3001/cm.html
+
+3. Acesse o api CM (Cloud Messaging) e execute o endpoint /send-notification-token
+
+http://localhost:3002/

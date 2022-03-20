@@ -10,7 +10,8 @@ docker-build:
 	docker build . -f account/Dockerfile -t account:0.0.1-SNAPSHOT && \
 	docker build . -f income/Dockerfile -t income:0.0.1-SNAPSHOT && \
 	docker build . -f wallet/Dockerfile -t wallet:0.0.1-SNAPSHOT && \
-	docker build . -f mq/Dockerfile -t mq:0.0.1-SNAPSHOT
+	docker build . -f mq/Dockerfile -t mq:0.0.1-SNAPSHOT && \
+	docker build . -f cm/Dockerfile -t cm:0.0.1-SNAPSHOT
 	cd app/frontend/web && docker build . -t web:0.0.1
 	cd app/frontend/lb && docker build . -t lb:0.0.1
 
@@ -19,12 +20,13 @@ docker-push:
 	docker tag income:0.0.1-SNAPSHOT hldtux/income:0.0.1-SNAPSHOT && docker push hldtux/income:0.0.1-SNAPSHOT
 	docker tag wallet:0.0.1-SNAPSHOT hldtux/wallet:0.0.1-SNAPSHOT && docker push hldtux/wallet:0.0.1-SNAPSHOT
 	docker tag mq:0.0.1-SNAPSHOT hldtux/mq:0.0.1-SNAPSHOT && docker push hldtux/mq:0.0.1-SNAPSHOT
+	docker tag cm:0.0.1-SNAPSHOT hldtux/cm:0.0.1-SNAPSHOT && docker push hldtux/cm:0.0.1-SNAPSHOT
 	docker tag web:0.0.1 hldtux/web:0.0.1 && docker push hldtux/web:0.0.1
 	docker tag lb:0.0.1 hldtux/lb:0.0.1 && docker push hldtux/lb:0.0.1
 
 docker-rmi:
 	docker images -f "dangling=true" -q | xargs docker rmi -f 
-	echo account:0.0.1-SNAPSHOT income:0.0.1-SNAPSHOT wallet:0.0.1-SNAPSHOT hldtux/account:0.0.1-SNAPSHOT hldtux/income:0.0.1-SNAPSHOT hldtux/wallet:0.0.1-SNAPSHOT hldtux/mq:0.0.1-SNAPSHOT | xargs docker rmi -f
+	echo account:0.0.1-SNAPSHOT income:0.0.1-SNAPSHOT wallet:0.0.1-SNAPSHOT hldtux/account:0.0.1-SNAPSHOT hldtux/income:0.0.1-SNAPSHOT hldtux/wallet:0.0.1-SNAPSHOT hldtux/mq:0.0.1-SNAPSHOT hldtux/cm:0.0.1-SNAPSHOT | xargs docker rmi -f
 
 k8s-apply:
 	$(MAKE) k8s-create-namespace
@@ -41,7 +43,7 @@ k8s-use-context-aws:
 
 k8s-start:
 	$(MAKE) k8s-apply
-	sleep 10
+	sleep 20
 	$(MAKE) forward-port
 	#$(MAKE) k8s-set-env
 
@@ -104,8 +106,10 @@ helm-install:
 	helm install --namespace $(NAMESPACE) --set name=wallet wallet infra/helm/wallet
 	helm install --namespace $(NAMESPACE) --set name=lb lb infra/helm/lb
 	helm install --namespace $(NAMESPACE) --set name=web web infra/helm/web
+	helm install --namespace $(NAMESPACE) --set name=mq mq infra/helm/mq
+	helm install --namespace $(NAMESPACE) --set name=cm cm infra/helm/cm
 	helm install --namespace $(NAMESPACE) --set name=swagger-ui swagger-ui infra/helm/swagger-ui
-	sleep 10
+	sleep 20
 	$(MAKE) forward-port
 
 helm-upgrade:
@@ -116,6 +120,8 @@ helm-upgrade:
 	helm upgrade --namespace $(NAMESPACE) --set name=wallet wallet infra/helm/wallet
 	helm upgrade --namespace $(NAMESPACE) --set name=lb lb infra/helm/lb
 	helm upgrade --namespace $(NAMESPACE) --set name=web web infra/helm/web
+	helm upgrade --namespace $(NAMESPACE) --set name=mq mq infra/helm/mq
+	helm upgrade --namespace $(NAMESPACE) --set name=cm cm infra/helm/cm
 	helm upgrade --namespace $(NAMESPACE) --set name=swagger-ui swagger-ui infra/helm/swagger-ui
 
 helm-uninstall:
@@ -123,7 +129,7 @@ helm-uninstall:
 	$(MAKE) close-port
 
 clean:
-	cd app/backend && rm -rf account/build income/build wallet/build queue/build
+	cd app/backend && rm -rf account/build income/build wallet/build mq/build cm/build
 	cd app/frontend && rm -rf web/build
 
 clean-gradle:

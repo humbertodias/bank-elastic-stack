@@ -1,12 +1,11 @@
-package bank.queue.controller;
+package bank.mq.controller;
 
-import bank.queue.mq.QueueProducer;
+import bank.mq.queue.QueueProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/mq")
 public class QueueController {
 
   @Autowired

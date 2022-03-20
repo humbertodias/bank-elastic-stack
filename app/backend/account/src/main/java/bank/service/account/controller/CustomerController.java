@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import bank.service.account.dto.CustomerDTO;
 
 @RestController
-@RequestMapping("/account/customer")
+@RequestMapping("customer")
 public class CustomerController {
 
   @Autowired

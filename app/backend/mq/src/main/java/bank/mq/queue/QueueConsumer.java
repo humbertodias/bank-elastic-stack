@@ -1,4 +1,4 @@
-package bank.queue.mq;
+package bank.mq.queue;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.messaging.handler.annotation.Payload;
