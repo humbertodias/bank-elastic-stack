@@ -6,6 +6,7 @@ services:
     build: app/frontend/lb
     ports:
       - "3005:3005"
+      - "3006:3006"
     depends_on:
       account:
         condition: service_healthy
@@ -22,6 +23,7 @@ services:
       - REACT_APP_LB_HOST=localhost
     ports:
       - "3001:3000"
+      - "3443:3443"
     networks:
       - frontend
       - backend
@@ -30,10 +32,8 @@ services:
     build:
       context: app/backend
       dockerfile: income/Dockerfile
-    volumes:
-      - gradle-cache:/home/gradle/.gradle
     environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/nubank-income
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/bank-income
     expose:
       - "8080"
     deploy:
@@ -48,10 +48,8 @@ services:
     build:
       context: app/backend
       dockerfile: wallet/Dockerfile
-    volumes:
-      - gradle-cache:/home/gradle/.gradle
     environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/nubank-wallet
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/bank-wallet
     expose:
       - "8080"
     deploy:
@@ -66,10 +64,8 @@ services:
     build:
       context: app/backend
       dockerfile: account/Dockerfile
-    volumes:
-      - gradle-cache:/home/gradle/.gradle
     environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/nubank-account
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/bank-account
     expose:
       - "8080"
     deploy:
@@ -84,13 +80,25 @@ services:
     build:
       context: app/backend
       dockerfile: mq/Dockerfile
-    volumes:
-      - gradle-cache:/home/gradle/.gradle
     environment:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_RABBITMQ_PORT=5672
       - SPRING_RABBITMQ_USERNAME=guest
       - SPRING_RABBITMQ_PASSWORD=guest
+    expose:
+      - "8080"
+    deploy:
+      replicas: 1
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - backend
+
+  cm:
+    build:
+      context: app/backend
+      dockerfile: cm/Dockerfile
     expose:
       - "8080"
     deploy:
@@ -121,10 +129,11 @@ services:
         condition: service_healthy
     environment:
       URLS: "[
-            { url: 'http://localhost:3005/income/openapi', name: 'Income'},
-            { url: 'http://localhost:3005/wallet/openapi', name: 'Wallet'},
-            { url: 'http://localhost:3005/account/openapi', name: 'Account'},
-            { url: 'http://localhost:3005/mq/openapi', name: 'MQ'},
+            { url: 'http://localhost:3005/income/v3/api-docs', name: 'Income'},
+            { url: 'http://localhost:3005/wallet/v3/api-docs', name: 'Wallet'},
+            { url: 'http://localhost:3005/account/v3/api-docs', name: 'Account'},
+            { url: 'http://localhost:3005/mq/v3/api-docs', name: 'MQ'},
+            { url: 'http://localhost:3005/cm/v3/api-docs', name: 'CM'},
            ]"
     networks:
       - backend
@@ -143,7 +152,6 @@ services:
 
 volumes:
   mongo_data:
-  gradle-cache:
 
 networks: 
     frontend:
