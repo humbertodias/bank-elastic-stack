@@ -28,9 +28,11 @@ Wallet/Income
 graph TD
     A[fa:fa-mobile Client] -->|:3000/*| B[fa:fa-server FrontEnd]
     B -->|:3005/*| C[fa:fa-balance-scale Load Balancer]
-    C -->|:8081/account| D[fa:fa-server Account]
-    C -->|:8082/income| E[fa:fa-server Income]
-    C -->|:8083/wallet| F[fa:fa-server Wallet]
+    C -->|:8080/account| D[fa:fa-server Account]
+    C -->|:8080/income| E[fa:fa-server Income]
+    C -->|:8080/wallet| F[fa:fa-server Wallet]
+    C -->|:8080/mq| G[fa:fa-server Message Queue]
+    C -->|:8080/cm| G[fa:fa-server Cloud Messaging]
     D -->|:27017| G[fa:fa-database NoSQL]
     E -->|:27017| G
     F -->|:27017| G
