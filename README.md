@@ -31,12 +31,13 @@ graph TD
     C -->|:8080/account| D[fa:fa-server Account]
     C -->|:8080/income| E[fa:fa-server Income]
     C -->|:8080/wallet| F[fa:fa-server Wallet]
-    C -->|:8080/mq| G[fa:fa-server Message Queue]
-    C -->|:8080/cm| G[fa:fa-server Cloud Messaging]
+    C -->|:8080/mq| I[fa:fa-server Message Queue]
+    C -->|:8080/cm| J[fa:fa-server Cloud Messaging]
     D -->|:27017| G[fa:fa-database NoSQL]
     E -->|:27017| G
     F -->|:27017| G
-    D -->|:5672 | H[fa:fa-database RabbitMQ]
+    I -->|:5672 | H[fa:fa-database RabbitMQ]
+    J -->|:5672 | K[fa:fa-database Firebase]
 ```
 
 All Services 
