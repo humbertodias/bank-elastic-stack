@@ -12,8 +12,9 @@ docker-build:
 	docker build . -f wallet/Dockerfile -t wallet:0.0.1-SNAPSHOT && \
 	docker build . -f mq/Dockerfile -t mq:0.0.1-SNAPSHOT && \
 	docker build . -f cm/Dockerfile -t cm:0.0.1-SNAPSHOT
-	cd app/frontend/web && docker build . -t web:0.0.1
-	cd app/frontend/lb && docker build . -t lb:0.0.1
+	cd app/frontend && \
+	docker build web -t web:0.0.1 && \
+	docker build lb -t lb:0.0.1
 
 docker-push:
 	docker tag account:0.0.1-SNAPSHOT hldtux/account:0.0.1-SNAPSHOT && docker push hldtux/account:0.0.1-SNAPSHOT

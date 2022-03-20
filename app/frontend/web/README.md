@@ -28,6 +28,6 @@ docker compose up
 
 http://localhost:3001/cm.html
 
-3. Acesse o api CM (Cloud Messaging) e execute o endpoint /send-notification-token
+3. Acesse a api CM (Cloud Messaging) e execute o endpoint /send-notification-token
 
 http://localhost:3002/

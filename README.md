@@ -39,18 +39,19 @@ graph TD
 
 All Services 
 
-| Service       | Network |   Port |
-|---------------|:-------:|-------:|
-| Web           |  Front  |   3001 |
-| SwaggerUI     |  Front  |   3002 |
-| Load balance  |  Front  |   3005 |
-| RabbitMQ      |  Front  |  15672 |
-| Income        |  Back   |   3005 |
-| Wallet        |  Back   |   3005 |
-| Account       |  Back   |   3005 |
-| Message Queue |  Back   |   3005 |
-| MongoDB       |  Back   |  27017 |
-| RabbitMQ      |  Back   |   5672 |
+| Service         | Network |   Port |
+|-----------------|:-------:|-------:|
+| Web             |  Front  |   3001 |
+| SwaggerUI       |  Front  |   3002 |
+| Load balance    |  Front  |   3005 |
+| RabbitMQ        |  Front  |  15672 |
+| Income          |  Back   |   3005 |
+| Wallet          |  Back   |   3005 |
+| Account         |  Back   |   3005 |
+| Message Queue   |  Back   |   3005 |
+| Cloud Messaging |  Back   |   3005 |
+| MongoDB         |  Back   |  27017 |
+| RabbitMQ        |  Back   |   5672 |
 
 ## Backend
 - [x] [Income](app/backend/income)  - Microsserviço responsável pela parte de rendimentos
@@ -59,6 +60,8 @@ All Services
 - [ ] [Auth](app/backend/auth)     - Authentication operations
 - [ ] [Card](app/backend/card)     - Contains methods to retrieve the feed of transactions from the credit card
 - [ ] [Payment](app/backend/payment)  - Contains methods to create payment requests
+- [ ] [MQ](app/backend/mq)  - Message Queue with RabbitMQ
+- [ ] [CM](app/backend/cm)  - Cloud Messaging with Firebase for push notifications
 
 ## How to run
 
