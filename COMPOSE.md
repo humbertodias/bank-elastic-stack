@@ -4,6 +4,12 @@
 docker compose up -d
 ```
 
+or
+
+```
+docker compose up -f docker-compose-dev.yml -d
+```
+
 Then access 
 
 http://localhost:3001

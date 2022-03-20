@@ -1,0 +1,156 @@
+version: '3.8'
+
+services:
+
+  lb:
+    image: hldtux/lb:0.0.1
+    ports:
+      - "3005:3005"
+      - "3006:3006"
+    depends_on:
+      account:
+        condition: service_healthy
+      income:
+        condition: service_healthy
+      wallet:
+        condition: service_healthy
+    networks:
+      - backend
+
+  web:
+    image: hldtux/web:0.0.1
+    environment:
+      - REACT_APP_LB_HOST=localhost
+    ports:
+      - "3001:3000"
+      - "3443:3443"
+    networks:
+      - frontend
+      - backend
+
+  income:
+    image: hldtux/income:0.0.1-SNAPSHOT
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/bank-income
+    expose:
+      - "8080"
+    deploy:
+      replicas: 1
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - backend
+
+  wallet:
+    image: hldtux/wallet:0.0.1-SNAPSHOT
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/bank-wallet
+    expose:
+      - "8080"
+    deploy:
+      replicas: 1
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - backend
+
+  account:
+    image: hldtux/account:0.0.1-SNAPSHOT
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/bank-account
+    expose:
+      - "8080"
+    deploy:
+      replicas: 1
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - backend
+
+  mq:
+    image: hldtux/mq:0.0.1-SNAPSHOT
+    environment:
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
+    expose:
+      - "8080"
+    deploy:
+      replicas: 1
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - backend
+
+  cm:
+    image: hldtux/cm:0.0.1-SNAPSHOT
+    expose:
+      - "8080"
+    deploy:
+      replicas: 1
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - backend
+
+  mongo:
+    build: app/data/mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      # Persist data
+      - mongo_data:/data/db
+    networks:
+      - backend
+
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    ports:
+      - "3002:8080"
+    depends_on:
+      lb:
+        condition: service_healthy
+    environment:
+      URLS: "[
+            { url: 'http://localhost:3005/income/v3/api-docs', name: 'Income'},
+            { url: 'http://localhost:3005/wallet/v3/api-docs', name: 'Wallet'},
+            { url: 'http://localhost:3005/account/v3/api-docs', name: 'Account'},
+            { url: 'http://localhost:3005/mq/v3/api-docs', name: 'MQ'},
+            { url: 'http://localhost:3005/cm/v3/api-docs', name: 'CM'},
+           ]"
+    networks:
+      - backend
+
+  rabbitmq:
+    build: app/data/rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - backend
+
+volumes:
+  mongo_data:
+
+networks: 
+    frontend:
+      driver: bridge
+      # ipam:
+      #   config:
+      #     - subnet: 172.168.57.0/24
+    backend:
+      driver: bridge
+      # ipam:
+      #   config:
+      #     - subnet: 172.168.58.0/24
