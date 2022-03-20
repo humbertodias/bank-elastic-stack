@@ -1,11 +1,11 @@
 package bank.cm.service;
 
 import bank.cm.model.Note;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
+import com.google.firebase.messaging.*;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class FirebaseMessagingService {
@@ -14,6 +14,15 @@ public class FirebaseMessagingService {
 
     public FirebaseMessagingService(FirebaseMessaging firebaseMessaging) {
         this.firebaseMessaging = firebaseMessaging;
+    }
+
+    public TopicManagementResponse subscribeToTopic(String topic, String ... tokens) throws FirebaseMessagingException {
+        // These registration tokens come from the client FCM SDKs.
+        List<String> registrationTokens = Arrays.asList(tokens);
+
+        // Subscribe the devices corresponding to the registration tokens to the topic.
+        return firebaseMessaging.subscribeToTopic(registrationTokens, topic);
+
     }
 
     public String sendNotificationTopic(Note note, String topic) throws FirebaseMessagingException {

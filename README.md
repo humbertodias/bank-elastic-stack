@@ -33,11 +33,11 @@ graph TD
     C -->|:8080/wallet| F[fa:fa-server Wallet]
     C -->|:8080/mq| I[fa:fa-server Message Queue]
     C -->|:8080/cm| J[fa:fa-server Cloud Messaging]
-    D -->|:27017| G[fa:fa-database NoSQL]
-    E -->|:27017| G
-    F -->|:27017| G
-    I -->|:5672 | H[fa:fa-database RabbitMQ]
-    J -->|:5672 | K[fa:fa-database Firebase]
+    D -->|tcp:27017| G[fa:fa-database NoSQL]
+    E -->|tcp:27017| G
+    F -->|tcp:27017| G
+    I -->|tcp:5672 | H[fa:fa-database RabbitMQ]
+    J -->|http:80  | K[fa:fa-database Firebase]
 ```
 
 All Services 
@@ -63,8 +63,8 @@ All Services
 - [ ] [Auth](app/backend/auth)     - Authentication operations
 - [ ] [Card](app/backend/card)     - Contains methods to retrieve the feed of transactions from the credit card
 - [ ] [Payment](app/backend/payment)  - Contains methods to create payment requests
-- [ ] [MQ](app/backend/mq)  - Message Queue with RabbitMQ
-- [ ] [CM](app/backend/cm)  - Cloud Messaging with Firebase for push notifications
+- [x] [MQ](app/backend/mq)  - Message Queue with RabbitMQ
+- [x] [CM](app/backend/cm)  - Cloud Messaging with Firebase for push notifications
 
 ## How to run
 
