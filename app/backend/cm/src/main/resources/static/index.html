@@ -5,18 +5,6 @@
         margin-bottom: 15px;
     }
 </style>
-<script>
-    // moving service worker context path
-    if('serviceWorker' in navigator) {
-        console.log('serviceWorker')
-        navigator.serviceWorker.register('/cm/firebase-messaging-sw.js')
-            .then(function(registration) {
-                console.log("Service Worker Registered");
-                messaging.useServiceWorker(registration);
-            });
-    }
-
-</script>
 <body>
 <div id="token"></div>
 <div id="msg"></div>
@@ -35,12 +23,6 @@
 
     // TODO: Replace firebaseConfig you get from Firebase Console
     var firebaseConfig = {
-        // apiKey: ...
-        // projectId: ...
-        // messagingSenderId: ...
-        // appId: ...
-        // ...other configs...
-
         apiKey: "AIzaSyBibA0RlNjroyU6JALc4jXifgjdsPnlLdQ",
         authDomain: "bank-elastic-stack.firebaseapp.com",
         projectId: "bank-elastic-stack",
@@ -48,7 +30,6 @@
         messagingSenderId: "556343964240",
         appId: "1:556343964240:web:3705fe949ca4828e2fd755",
         measurementId: "G-CJK2HVRRE5"
-
     };
     firebase.initializeApp(firebaseConfig);
 
