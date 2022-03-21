@@ -14,20 +14,3 @@ Projeto desenvolvido com Ionic + React.
 
 Após isso você poderá acessar o app pelo endereço:
 `http://localhost:8100/`
-
-
-# Push Notification
-
-1. Inicie a stack
-
-```
-docker compose up
-```
-
-2. Permita a execuçao da notificaçao e copie o token gerado em
-
-http://localhost:3001/cm.html
-
-3. Acesse a api CM (Cloud Messaging) e execute o endpoint /send-notification-token
-
-http://localhost:3002/
