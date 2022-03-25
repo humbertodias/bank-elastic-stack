@@ -1,11 +1,11 @@
 1. Get Token
 
-http://localhost:3005/cm.html
+http://localhost:3001/cm.html
 
 2. Send Notification by Token
 
 ```
-TOKEN=cTJpTvsELJm44cxjU-RXwb:APA91bE-FwJ4Lct9_mCMEC7eMDpDZ5OCs_Fk9NNAXRM48Aqtn16IQe-_0iHzAn8W35RxMoIGpuPj0-ndg42DnZgHipPuhzo4paK53TH6IBOLQQ-ueeN-fo2PxtQPqQahOSQ_54N_qi6O
+TOKEN=erkKpeZbxvVIKQD5IQUlkE:APA91bFw_uwxDhTphkFpM8rFnz1xquGgwrgFNR_uW68btKlHe7WVB-Hw-_cBDeYIGY2tvFWjnZOU3T-NrQrUTUIVpPwxN9op8mpRt2vjlbpNjudY_kQro7q8CBgDhVZqehSI4QYwWhJs
 curl -X POST "http://localhost:3005/cm/send-notification-token/${TOKEN}" \
   -H "Content-Type: application/json" \
   -d '{
