@@ -1,0 +1,47 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lb
+  labels:
+    name: lb
+  annotations:
+    ingress.kubernetes.io/enable-cors: "true"
+    ingress.kubernetes.io/cors-origins: "*"
+    ingress.kubernetes.io/cors-methods: "GET, POST, OPTIONS, PUT, DELETE, HEAD"
+
+spec:
+  rules:
+  - host: lb.localhost
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: lb
+            port:
+              number: 3005
+      # - pathType: Prefix
+      #   path: "/account"
+      #   backend:
+      #     service:
+      #       name: account
+      #       port:
+      #         number: 8080
+      # - pathType: Prefix
+      #   path: "/income"
+      #   backend:
+      #     service:
+      #       name: income
+      #       port:
+      #         number: 8080
+      # - pathType: Prefix
+      #   path: "/wallet"
+      #   backend:
+      #     service:
+      #       name: wallet
+      #       port:
+      #         number: 8080
+  tls:
+  - hosts:
+    - lb.localhost

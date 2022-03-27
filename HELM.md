@@ -12,11 +12,11 @@ make forward-port
 
 Then access
 
-http://localhost:3001
+http://localhost:3001 or http://web.localhost:3001
 
-and
+and 
 
-http://localhost:3002
+http://localhost:3002 or http://swagger-ui.localhost:3002
 
 
 Scale
@@ -30,3 +30,7 @@ Stop
 ```
 make helm-uninstall
 ```
+
+# Ref
+
+* [Ingress CORS](https://torchbox.github.io/k8s-ts-ingress/cors/)

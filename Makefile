@@ -60,6 +60,7 @@ k8s-set-env:
 	bash infra/port-forward.sh web 3001 $(NAMESPACE)
 
 k8s-stop:
+	$(MAKE) k8s-delete
 	$(MAKE) k8s-delete-namespace
 	$(MAKE) close-port
 
@@ -126,6 +127,16 @@ helm-upgrade:
 	helm upgrade --namespace $(NAMESPACE) --set name=swagger-ui swagger-ui infra/helm/swagger-ui
 
 helm-uninstall:
+	helm uninstall --namespace $(NAMESPACE) mongo
+	helm uninstall --namespace $(NAMESPACE) rabbitmq
+	helm uninstall --namespace $(NAMESPACE) account
+	helm uninstall --namespace $(NAMESPACE) income
+	helm uninstall --namespace $(NAMESPACE) wallet
+	helm uninstall --namespace $(NAMESPACE) lb
+	helm uninstall --namespace $(NAMESPACE) web
+	helm uninstall --namespace $(NAMESPACE) mq
+	helm uninstall --namespace $(NAMESPACE) cm
+	helm uninstall --namespace $(NAMESPACE) swagger-ui
 	$(MAKE) k8s-delete-namespace
 	$(MAKE) close-port
 
