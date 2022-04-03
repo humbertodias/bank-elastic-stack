@@ -49,7 +49,7 @@ public class WalletService {
     RestTemplate restTemplate;
 
     public IncomeDTO getIncome(String cdi) {
-        return restTemplate.getForObject("http://income:8080/income/get/" + cdi, IncomeDTO.class);
+        return restTemplate.getForObject("http://income:8080/get/" + cdi, IncomeDTO.class);
     }
 
 }
