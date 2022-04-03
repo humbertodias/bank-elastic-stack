@@ -1,4 +1,4 @@
-FROM gradle:7.4.0-jdk11-alpine as cache
+FROM gradle:jdk11 as cache
 RUN mkdir -p /home/gradle/cache_home
 ENV GRADLE_USER_HOME /home/gradle/cache_home
 COPY cm/build.gradle /home/gradle/java-code/
@@ -7,7 +7,7 @@ RUN sed -i 's/implementation project(":core")//' build.gradle
 RUN echo "bootJar { enabled = false }" >> build.gradle
 RUN gradle clean build -i --stacktrace
 
-FROM gradle:7.4.0-jdk11-alpine AS build
+FROM gradle:jdk11 AS build
 ENV GRADLE_OPTS=""
 COPY --from=cache /home/gradle/cache_home /home/gradle/.gradle
 COPY --chown=gradle:gradle . /home/gradle/src
