@@ -7,7 +7,7 @@ AWS_CLUSTER_NAME=my-cluster
 
 docker-build:
 	cd app/backend && \
-	docker build . -f account/Dockerfile -t account:0.0.1-SNAPSHOT && \
+	docker build account -t account:0.0.1-SNAPSHOT && \
 	docker build . -f income/Dockerfile -t income:0.0.1-SNAPSHOT && \
 	docker build . -f wallet/Dockerfile -t wallet:0.0.1-SNAPSHOT && \
 	docker build . -f mq/Dockerfile -t mq:0.0.1-SNAPSHOT && \

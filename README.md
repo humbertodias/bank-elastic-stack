@@ -79,3 +79,4 @@ All Services
 * [mermaid-editor](https://mermaidjs.github.io/mermaid-live-editor)
 * [spring-boot-banner-generator](https://springhow.com/spring-boot-banner-generator/)
 * [kompose](https://kompose.io/)
+* [gradle-git-properties](https://github.com/n0mer/gradle-git-properties)

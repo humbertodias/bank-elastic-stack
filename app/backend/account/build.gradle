@@ -1,10 +1,11 @@
 plugins {
 	id 'org.springframework.boot' version '2.6.6'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'com.gorylenko.gradle-git-properties' version '2.4.0'
 	id 'java'
 }
 
-group = 'service-account'
+group = 'com.bank'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
@@ -18,7 +19,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
 
-	implementation project(":core")
+//	implementation project(":core")
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -26,4 +27,28 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+gitProperties {
+	extProperty = 'gitProps' // git properties will be put in a map at project.ext.gitProps
+	failOnNoGitDirectory = false
+}
+generateGitProperties.outputs.upToDateWhen { false } // make sure the generateGitProperties task always executes (even when git.properties is not changed)
+
+task printGitProperties(dependsOn: 'generateGitProperties') { // make sure generateGitProperties task to execute before accessing generated properties
+	doLast {
+		println project.ext.gitProps
+	}
+}
+
+bootJar {
+	enabled = true
+}
+
+jar {
+	enabled = true
+}
+
+springBoot {
+	mainClass = 'bank.service.account.App'
 }
